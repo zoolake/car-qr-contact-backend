@@ -1,0 +1,12 @@
+services:
+  chacall-db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: wnsgh12
+      MYSQL_DATABASE: chacall
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: 123
+      TZ: Asia/Seoul
+    ports:
+      - 3306:3306
+
