@@ -1,12 +1,19 @@
 package com.chacall.chacall.controller;
 
+import com.chacall.chacall.auth.SessionUser;
+import com.chacall.chacall.domain.User;
 import com.chacall.chacall.dto.request.CarRegisterRequest;
+import com.chacall.chacall.dto.request.UserLoginRequest;
 import com.chacall.chacall.dto.request.UserSignupRequest;
 import com.chacall.chacall.dto.response.CarResponse;
+import com.chacall.chacall.dto.response.UserLoginResponse;
 import com.chacall.chacall.service.CarService;
 import com.chacall.chacall.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +29,19 @@ public class UserController {
     private final UserService userService;
     private final CarService carService;
 
-    /* 임시 로그인 */
+    /* 로그인 */
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody @Valid Map<String, String> request) {
-        request.forEach((key, value) -> System.out.println(key + ":" + value));
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UserLoginResponse> login(@RequestBody @Valid UserLoginRequest request, HttpServletRequest servletRequest) {
+        User user = userService.login(request.getPhoneNumber(), request.getPassword());
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        HttpSession session = servletRequest.getSession();
+        session.setAttribute("loginUser", SessionUser.from(user));
+
+        return ResponseEntity.ok(UserLoginResponse.from(user));
     }
 
     /* 회원가입 */

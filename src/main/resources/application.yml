@@ -4,6 +4,9 @@ spring:
     url: jdbc:mysql://localhost:3306/chacall?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: myuser
     password: 123
+  session:
+    jdbc:
+      initialize-schema: always
 
   jpa:
     hibernate:
@@ -14,4 +17,11 @@ spring:
         format_sql: true
         highlight_sql: true
     show-sql: true
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: true
 

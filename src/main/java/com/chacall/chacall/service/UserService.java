@@ -19,4 +19,8 @@ public class UserService {
         return saved.getId();
     }
 
+    /* 로그인 */
+    public User login(String phoneNumber, String password) {
+        return userRepository.findUserByPhoneNumberAndPassword(phoneNumber, password);
+    }
 }
