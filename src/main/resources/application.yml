@@ -24,4 +24,5 @@ server:
       cookie:
         http-only: true
         secure: true
+      timeout: 30m
 
