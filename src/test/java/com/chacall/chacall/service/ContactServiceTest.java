@@ -5,7 +5,7 @@ import com.chacall.chacall.domain.Contact;
 import com.chacall.chacall.domain.User;
 import com.chacall.chacall.repository.CarRepository;
 import com.chacall.chacall.repository.ContactRepository;
-import com.chacall.chacall.repository.UserRepository;
+import com.chacall.chacall.repository.UserJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +24,7 @@ class ContactServiceTest {
     private ContactRepository contactRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
     private CarRepository carRepository;
@@ -50,7 +50,7 @@ class ContactServiceTest {
 
     private User createTestUser() {
         User user = new User("01012123434", "test1");
-        userRepository.save(user);
+        userJpaRepository.save(user);
 
         return user;
     }

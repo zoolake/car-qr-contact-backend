@@ -3,7 +3,7 @@ package com.chacall.chacall.service;
 import com.chacall.chacall.domain.Car;
 import com.chacall.chacall.domain.User;
 import com.chacall.chacall.repository.CarRepository;
-import com.chacall.chacall.repository.UserRepository;
+import com.chacall.chacall.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import java.util.List;
 public class CarService {
 
     private final CarRepository carRepository;
-    private final UserRepository userRepository;
+    private final UserJpaRepository userJpaRepository;
 
     private final QRService qrService;
     private final ContactService contactService;
@@ -33,7 +33,7 @@ public class CarService {
 
     @Transactional
     public Long registerCar(Long userId, String nickname, String message) {
-        User user = userRepository.findById(userId)
+        User user = userJpaRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 입니다."));
 
         Car car = carRepository.save(new Car(user, nickname, message));
