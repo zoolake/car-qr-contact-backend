@@ -39,4 +39,9 @@ public class FakeUserRepository implements UserRepository {
                 .filter(user -> user.getPhoneNumber().equals(phoneNumber))
                 .findFirst();
     }
+
+    @Override
+    public Optional<User> findById(Long userId) {
+        return Optional.ofNullable(database.get(userId));
+    }
 }

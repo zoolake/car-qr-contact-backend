@@ -9,15 +9,20 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
-    private final UserJpaRepository repository;
+    private final UserJpaRepository userJpaRepository;
 
     @Override
     public User save(User user) {
-        return repository.save(user);
+        return userJpaRepository.save(user);
     }
 
     @Override
     public Optional<User> findUserByPhoneNumber(String phoneNumber) {
-        return repository.findUserByPhoneNumber(phoneNumber);
+        return userJpaRepository.findUserByPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public Optional<User> findById(Long userId) {
+        return userJpaRepository.findById(userId);
     }
 }
