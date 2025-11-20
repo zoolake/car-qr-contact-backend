@@ -1,5 +1,6 @@
 package com.chacall.chacall.repository;
 
+import com.chacall.chacall.domain.FakeUser;
 import com.chacall.chacall.domain.User;
 
 import java.util.Map;

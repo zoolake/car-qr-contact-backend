@@ -1,7 +1,6 @@
 package com.chacall.chacall.service;
 
 import com.chacall.chacall.domain.User;
-import com.chacall.chacall.repository.FakeUser;
 import com.chacall.chacall.repository.FakeUserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
