@@ -14,8 +14,17 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     /* 회원가입 */
-    public Long join(String phoneNumber, String password) {
+    public Long join(String phoneNumber, String password, String confirmPassword) {
+        if (!password.equals(confirmPassword)) {
+            throw new IllegalArgumentException("입력한 비밀번호가 서로 일치하지 않습니다.");
+        }
+
+        if (isDuplicatedPhoneNumber(phoneNumber)) {
+            throw new IllegalArgumentException("이미 가입된 전화번호 입니다.");
+        }
+
         User user = new User(phoneNumber, passwordEncoder.encode(password));
+
         return userRepository.save(user).getId();
     }
 
@@ -31,6 +40,11 @@ public class UserService {
         }
 
         return user;
+    }
+
+    /* 중복 회원 여부 (전화번호 기준) */
+    private boolean isDuplicatedPhoneNumber(String phoneNumber) {
+        return userRepository.findUserByPhoneNumber(phoneNumber).isPresent();
     }
 
     /* 패스워드 비교 메서드 */

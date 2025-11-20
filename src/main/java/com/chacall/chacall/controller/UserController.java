@@ -47,7 +47,7 @@ public class UserController {
     /* 회원가입 */
     @PostMapping("/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid UserSignupRequest request) {
-        userService.join(request.getPhoneNumber(), request.getPassword());
+        userService.join(request.getPhoneNumber(), request.getPassword(), request.getConfirmPassword());
 
         URI targetLocation = URI.create("/");
         return ResponseEntity.created(targetLocation).build();

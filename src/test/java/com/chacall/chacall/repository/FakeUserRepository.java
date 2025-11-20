@@ -16,6 +16,10 @@ public class FakeUserRepository implements UserRepository {
         this.database = new ConcurrentHashMap<>();
     }
 
+    public void clear() {
+        database.clear();
+    }
+
     @Override
     public User save(User user) {
         if (user.getId() != null) {
