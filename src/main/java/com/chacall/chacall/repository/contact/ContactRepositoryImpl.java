@@ -1,4 +1,4 @@
-package com.chacall.chacall.repository;
+package com.chacall.chacall.repository.contact;
 
 import com.chacall.chacall.domain.Contact;
 import lombok.RequiredArgsConstructor;

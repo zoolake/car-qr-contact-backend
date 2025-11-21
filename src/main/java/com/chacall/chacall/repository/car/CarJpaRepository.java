@@ -1,16 +1,13 @@
-package com.chacall.chacall.repository;
+package com.chacall.chacall.repository.car;
 
 import com.chacall.chacall.domain.Car;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface CarRepository {
+public interface CarJpaRepository extends JpaRepository<Car, Long> {
     List<Car> findCarsByUserId(Long userId);
-
-    Optional<Car> findById(Long carId);
-
-    Car save(Car car);
 
     Optional<Car> findCarByUserIdAndNickname(Long userId, String nickname);
 }

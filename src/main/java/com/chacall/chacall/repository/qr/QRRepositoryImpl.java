@@ -1,4 +1,4 @@
-package com.chacall.chacall.repository;
+package com.chacall.chacall.repository.qr;
 
 import com.chacall.chacall.domain.QR;
 import lombok.RequiredArgsConstructor;

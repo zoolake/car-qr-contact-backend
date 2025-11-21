@@ -2,6 +2,7 @@ package com.chacall.chacall.repository;
 
 import com.chacall.chacall.domain.Contact;
 import com.chacall.chacall.domain.FakeContact;
+import com.chacall.chacall.repository.contact.ContactRepository;
 
 import java.util.List;
 import java.util.Map;

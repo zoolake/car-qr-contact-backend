@@ -1,4 +1,4 @@
-package com.chacall.chacall.repository;
+package com.chacall.chacall.repository.car;
 
 import com.chacall.chacall.domain.Car;
 import lombok.RequiredArgsConstructor;

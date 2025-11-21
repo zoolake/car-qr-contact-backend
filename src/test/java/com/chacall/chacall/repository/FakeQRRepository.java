@@ -1,6 +1,7 @@
 package com.chacall.chacall.repository;
 
 import com.chacall.chacall.domain.QR;
+import com.chacall.chacall.repository.qr.QRRepository;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

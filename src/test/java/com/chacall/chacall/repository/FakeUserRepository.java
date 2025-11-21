@@ -2,6 +2,7 @@ package com.chacall.chacall.repository;
 
 import com.chacall.chacall.domain.FakeUser;
 import com.chacall.chacall.domain.User;
+import com.chacall.chacall.repository.user.UserRepository;
 
 import java.util.Map;
 import java.util.Optional;

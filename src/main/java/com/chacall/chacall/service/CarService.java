@@ -2,8 +2,8 @@ package com.chacall.chacall.service;
 
 import com.chacall.chacall.domain.Car;
 import com.chacall.chacall.domain.User;
-import com.chacall.chacall.repository.CarRepository;
-import com.chacall.chacall.repository.UserRepository;
+import com.chacall.chacall.repository.car.CarRepository;
+import com.chacall.chacall.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
