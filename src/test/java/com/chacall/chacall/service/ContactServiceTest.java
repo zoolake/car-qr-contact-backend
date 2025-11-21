@@ -2,64 +2,117 @@ package com.chacall.chacall.service;
 
 import com.chacall.chacall.domain.Car;
 import com.chacall.chacall.domain.Contact;
+import com.chacall.chacall.domain.ContactStatus;
 import com.chacall.chacall.domain.User;
-import com.chacall.chacall.repository.CarJpaRepository;
-import com.chacall.chacall.repository.ContactJpaRepository;
-import com.chacall.chacall.repository.UserJpaRepository;
+import com.chacall.chacall.repository.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Optional;
 
-@SpringBootTest
-@Transactional
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+
 class ContactServiceTest {
 
-    @Autowired
-    private ContactService contactService;
-
-    @Autowired
-    private ContactJpaRepository contactRepository;
-
-    @Autowired
-    private UserJpaRepository userJpaRepository;
-
-    @Autowired
-    private CarJpaRepository carRepository;
+    private final FakeContactRepository contactRepository = new FakeContactRepository();
+    private final FakeCarRepository carRepository = new FakeCarRepository();
+    private final ContactService contactService = new ContactService(contactRepository, carRepository);
 
     @Test
-    public void 연락처_정상_등록() {
+    @DisplayName("차량에 연락처를 등록한다.")
+    void registerContact() {
         User user = createTestUser();
         Car car = createTestCar(user);
 
-        String phoneNumber = "01012345678";
-        String name = "myName";
+        String phoneNumber = "010-3456-1234";
+        String name = "홍길동";
         Long contactId = contactService.registerContact(car.getId(), phoneNumber, name);
 
         Contact contact = contactRepository.findById(contactId).get();
-
-        assertThat(phoneNumber).isEqualTo(contact.getPhoneNumber());
-        assertThat(name).isEqualTo(contact.getName());
+        assertThat(contact).isNotNull();
+        assertThat(contact.getId()).isEqualTo(contactId);
+        assertThat(contact.getPhoneNumber()).isEqualTo(phoneNumber);
+        assertThat(contact.getName()).isEqualTo(name);
+        assertThat(contact.getStatus()).isEqualTo(ContactStatus.AVAILABLE);
     }
 
     @Test
-    public void 입력받은_연락처에_숫자가_아닌_문자가_있는_경우_예외_발생() {
+    @DisplayName("등록되지 않은 차량에 연락처 등록 시 예외가 발생한다.")
+    void failToRegisterContactWhenCarDoesNotExist() {
+        Long invalidCarId = 13L;
+        String phoneNumber = "010-3456-1234";
+        String name = "홍길동";
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> contactService.registerContact(invalidCarId, phoneNumber, name));
+    }
+
+    @Test
+    @DisplayName("연락처 등록 시, 대상 차량에 이미 동일한 연락처가 등록되어 있다면 예외가 발생한다.")
+    void failToRegisterContactWhenContactIsDuplicated() {
+        User user = createTestUser();
+        Car car = createTestCar(user);
+
+        String phoneNumber = "010-3456-1234";
+        String name = "홍길동";
+        contactService.registerContact(car.getId(), phoneNumber, name);
+
+        String duplicatedPhoneNumber = phoneNumber;
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> contactService.registerContact(car.getId(), duplicatedPhoneNumber, name));
+    }
+
+    @Test
+    @DisplayName("등록되지 않은 연락처를 수정 시 예외가 발생한다.")
+    void failToUpdateContactWhenContactDoesNotExist() {
+        User user = createTestUser();
+        Car car = createTestCar(user);
+
+        String phoneNumber = "010-3456-1234";
+        String name = "홍길동";
+        contactService.registerContact(car.getId(), phoneNumber, name);
+
+        Long invalidContactId = 13L;
+        String newPhoneNumber = "010-1234-5678";
+        String newName = "임꺽정";
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> contactService.updateContactInfo(invalidContactId, newPhoneNumber, newName, ContactStatus.AVAILABLE));
+    }
+
+    @Test
+    @DisplayName("연락처 정보를 수정한다.")
+    void updateContact() {
+        User user = createTestUser();
+        Car car = createTestCar(user);
+
+        String phoneNumber = "010-3456-1234";
+        String name = "홍길동";
+        Long contactId = contactService.registerContact(car.getId(), phoneNumber, name);
+
+        String newPhoneNumber = "010-1234-5678";
+        String newName = "임꺽정";
+        ContactStatus newStatus = ContactStatus.AVAILABLE;
+        Contact updatedContact = contactService.updateContactInfo(contactId, newPhoneNumber, newName, newStatus);
+
+        assertThat(updatedContact.getId()).isEqualTo(contactId);
+        assertThat(updatedContact.getPhoneNumber()).isEqualTo(newPhoneNumber);
+        assertThat(updatedContact.getName()).isEqualTo(newName);
+        assertThat(updatedContact.getStatus()).isEqualTo(newStatus);
     }
 
     private User createTestUser() {
         User user = new User("01012123434", "test1");
-        userJpaRepository.save(user);
-
-        return user;
+        return new FakeUserRepository().save(user);
     }
 
     private Car createTestCar(User user) {
         Car car = new Car(user, "carNickName", "carMessage");
-        carRepository.save(car);
-
-        return car;
+        return carRepository.save(car);
     }
 
 }

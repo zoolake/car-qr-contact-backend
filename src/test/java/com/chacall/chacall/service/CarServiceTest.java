@@ -25,7 +25,7 @@ class CarServiceTest {
 
     @Test
     @DisplayName("차량을 등록한다.")
-    public void registerCar() {
+    void registerCar() {
         User user = userRepository.save(createTestUser());
         String nickname = "차량 닉네임";
         String message = "잠시 주차하겠습니다. 연락주세요.";
@@ -41,7 +41,7 @@ class CarServiceTest {
 
     @Test
     @DisplayName("차량 정보를 수정한다.")
-    public void updateCarInfo() {
+    void updateCarInfo() {
         User user = userRepository.save(createTestUser());
         String nickname = "차량 닉네임";
         String message = "잠시 주차하겠습니다. 연락주세요.";
@@ -58,7 +58,7 @@ class CarServiceTest {
 
     @Test
     @DisplayName("차량 ID 를 통해 차량 정보를 조회한다.")
-    public void getCarByUserId() {
+    void getCarByUserId() {
         User user = userRepository.save(createTestUser());
         String nickname = "차량 닉네임";
         String message = "잠시 주차하겠습니다. 연락주세요.";
@@ -75,7 +75,7 @@ class CarServiceTest {
 
     @Test
     @DisplayName("차량 등록 시, 현재 계정으로 등록된 차량과 닉네임이 중복되는 경우 등록에 실패한다.")
-    public void failWhenNicknameIsDuplicated() {
+    void failWhenNicknameIsDuplicated() {
         User user = userRepository.save(createTestUser());
         String nickname = "차량 닉네임";
         String message = "잠시 주차하겠습니다. 연락주세요.";
@@ -89,7 +89,7 @@ class CarServiceTest {
 
     @Test
     @DisplayName("사용자가 등록한 차량 목록들을 조회한다.")
-    public void getCarsRegisteredByUser() {
+    void getCarsRegisteredByUser() {
         User user = userRepository.save(createTestUser());
 
         int carCount = 3;
@@ -110,7 +110,7 @@ class CarServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 차량을 조회하는 경우 예외가 발생한다.")
-    public void failToReadCarWhenCarDoesNotExist() {
+    void failToReadCarWhenCarDoesNotExist() {
         User user = userRepository.save(createTestUser());
         String nickname = "차량 닉네임";
         String message = "잠시 주차하겠습니다. 연락주세요.";
@@ -124,7 +124,7 @@ class CarServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 차량을 수정하는 경우 예외가 발생한다.")
-    public void failToUpdateCarWhenCarDoesNotExist() {
+    void failToUpdateCarWhenCarDoesNotExist() {
         User user = userRepository.save(createTestUser());
         String nickname = "차량 닉네임";
         String message = "잠시 주차하겠습니다. 연락주세요.";
@@ -140,7 +140,7 @@ class CarServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 사용자로 차량을 등록하는 경우 예외가 발생한다.")
-    public void failToRegisterCarWhenUserDoesNotExist() {
+    void failToRegisterCarWhenUserDoesNotExist() {
         Long invalidUserId = 13L;
         String nickname = "차량 닉네임";
         String message = "잠시 주차하겠습니다. 연락주세요.";
@@ -151,7 +151,7 @@ class CarServiceTest {
 
     @Test
     @DisplayName("사용자가 등록한 차량이 아닌 차량을 수정하는 경우 예외가 발생한다.")
-    public void failToUpdateCarWhenCarIsNotOwnedByUser() {
+    void failToUpdateCarWhenCarIsNotOwnedByUser() {
         User user = userRepository.save(createTestUser());
         String nickname = "차량 닉네임";
         String message = "잠시 주차하겠습니다. 연락주세요.";

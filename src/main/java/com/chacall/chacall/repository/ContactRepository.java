@@ -11,4 +11,6 @@ public interface ContactRepository {
     Optional<Contact> findById(Long contactId);
 
     List<Contact> findContactsByCarId(Long carId);
+
+    Optional<Contact> findContactByPhoneNumber(String phoneNumber);
 }

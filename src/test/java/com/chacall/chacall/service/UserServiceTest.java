@@ -24,7 +24,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("회원가입을 한다.")
-    public void signUp() {
+    void signUp() {
         String phoneNumber = "010-1234-5678";
         String password = "pwd123";
         String confirmPassword = password;
@@ -38,7 +38,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("로그인을 한다.")
-    public void login() {
+    void login() {
         String phoneNumber = "010-1234-5678";
         String password = "pwd123";
         userService.join(phoneNumber, password, password);
@@ -51,7 +51,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("이미 가입된 휴대폰 번호인 경우 회원가입 시 예외가 발생한다.")
-    public void failWhenEnteredPhoneNumberIsDuplicated() {
+    void failWhenEnteredPhoneNumberIsDuplicated() {
         String phoneNumber = "010-1234-5678";
         String password = "pwd123";
         userRepository.save(new User(phoneNumber, password));
@@ -65,7 +65,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("회원가입 시, 입력한 비밀번호와 확인용 비밀번호가 일치하지 않으면 예외가 발생한다.")
-    public void failWhenPasswordsDoNotMatch() {
+    void failWhenPasswordsDoNotMatch() {
         String phoneNumber = "010-1234-5678";
         String password = "pwd123";
         String confirmPassword = "qwer1234";

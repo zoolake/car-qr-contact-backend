@@ -25,6 +25,9 @@ class QRServiceTest {
     @Autowired
     private CarJpaRepository carRepository;
 
+    // 연락처 상태가 unavailable 일 때, 사용자 계정이 아닌 다른 곳에서는 못보게끔 하는 테스트도 필요할듯.
+
+
     @Test
     public void QR_코드_생성() throws IOException, WriterException {
         User user = createTestUser();

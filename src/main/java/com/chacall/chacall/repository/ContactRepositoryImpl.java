@@ -27,4 +27,9 @@ public class ContactRepositoryImpl implements ContactRepository {
     public List<Contact> findContactsByCarId(Long carId) {
         return contactJpaRepository.findContactsByCarId(carId);
     }
+
+    @Override
+    public Optional<Contact> findContactByPhoneNumber(String phoneNumber) {
+        return contactJpaRepository.findContactByPhoneNumber(phoneNumber);
+    }
 }

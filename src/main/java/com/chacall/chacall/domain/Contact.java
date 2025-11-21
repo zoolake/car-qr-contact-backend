@@ -6,7 +6,8 @@ import lombok.Getter;
 @Entity
 @Getter
 public class Contact {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contact_id")
     private Long id;
 
@@ -21,6 +22,11 @@ public class Contact {
     private ContactStatus status;
 
     protected Contact() {
+    }
+
+    protected Contact(Long contactId, Car car, String name, String phoneNumber) {
+        this(car, name, phoneNumber);
+        this.id = contactId;
     }
 
     public Contact(Car car, String name, String phoneNumber) {

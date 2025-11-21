@@ -1,6 +1,7 @@
 package com.chacall.chacall.repository;
 
 import com.chacall.chacall.domain.Contact;
+import com.chacall.chacall.domain.FakeContact;
 
 import java.util.List;
 import java.util.Map;
@@ -25,18 +26,27 @@ public class FakeContactRepository implements ContactRepository {
         }
 
         long id = idGenerator.getAndIncrement();
-        database.put(id, contact);
+        database.put(id, new FakeContact(id, contact));
 
         return database.get(id);
     }
 
     @Override
     public Optional<Contact> findById(Long contactId) {
-        return Optional.empty();
+        return Optional.ofNullable(database.get(contactId));
     }
 
     @Override
     public List<Contact> findContactsByCarId(Long carId) {
-        return null;
+        return database.values().stream()
+                .filter(contact -> contact.getCar().getId().equals(carId))
+                .toList();
+    }
+
+    @Override
+    public Optional<Contact> findContactByPhoneNumber(String phoneNumber) {
+        return database.values().stream()
+                .filter(contact -> contact.getPhoneNumber().equals(phoneNumber))
+                .findFirst();
     }
 }

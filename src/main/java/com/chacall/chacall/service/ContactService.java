@@ -30,6 +30,10 @@ public class ContactService {
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 carId 입니다."));
 
+        if (contactRepository.findContactByPhoneNumber(phoneNumber).isPresent()) {
+            throw new IllegalArgumentException("차량에 이미 등록된 연락처 입니다.");
+        }
+
         Contact saved = contactRepository.save(new Contact(car, name, phoneNumber));
         return saved.getId();
     }
@@ -47,7 +51,7 @@ public class ContactService {
             contact.changeName(newName);
         }
 
-        if(newStatus != null) {
+        if (newStatus != null) {
             contact.changeStatus(newStatus);
         }
 
