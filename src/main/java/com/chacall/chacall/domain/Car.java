@@ -23,6 +23,14 @@ public class Car {
     protected Car() {
     }
 
+    /* 단위테스트를 위한 생성자 */
+    protected Car(Long carId, User user, String nickname, String message) {
+        this.id = carId;
+        this.user = user;
+        this.nickname = nickname;
+        this.message = message;
+    }
+
     public Car(User user, String nickname, String message) {
         this.user = user;
         this.nickname = nickname;

@@ -3,7 +3,6 @@ package com.chacall.chacall.service;
 import com.chacall.chacall.domain.Car;
 import com.chacall.chacall.domain.User;
 import com.chacall.chacall.repository.CarRepository;
-import com.chacall.chacall.repository.UserJpaRepository;
 import com.chacall.chacall.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,6 +36,10 @@ public class CarService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 입니다."));
 
+        if (carRepository.findCarByUserIdAndNickname(user.getId(), nickname).isPresent()) {
+            throw new IllegalArgumentException("중복된 닉네임의 차량이 존재합니다.");
+        }
+
         Car car = carRepository.save(new Car(user, nickname, message));
 
         // QR 등록
@@ -49,9 +52,13 @@ public class CarService {
     }
 
     @Transactional
-    public Car updateCarInfo(Long carId, String nickname, String message) {
+    public Car updateCarInfo(Long userId, Long carId, String nickname, String message) {
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 차량 입니다."));
+
+        if (!userId.equals(car.getUser().getId())) {
+            throw new IllegalArgumentException("현재 계정이 등록한 차량의 정보만 수정 가능합니다.");
+        }
 
         if (nickname != null) {
             car.changeNickname(nickname);

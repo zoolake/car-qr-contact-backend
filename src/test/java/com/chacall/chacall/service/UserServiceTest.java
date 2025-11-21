@@ -23,8 +23,8 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("휴대폰번호, 비밀번호, 확인용 비밀번호를 입력하여 회원가입을 한다.")
-    public void signUpWithPhoneNumberAndPassword() {
+    @DisplayName("회원가입을 한다.")
+    public void signUp() {
         String phoneNumber = "010-1234-5678";
         String password = "pwd123";
         String confirmPassword = password;
@@ -37,8 +37,8 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("휴대폰번호, 비밀번호를 입력하여 로그인을 한다.")
-    public void loginWithPhoneNumberAndPassword() {
+    @DisplayName("로그인을 한다.")
+    public void login() {
         String phoneNumber = "010-1234-5678";
         String password = "pwd123";
         userService.join(phoneNumber, password, password);

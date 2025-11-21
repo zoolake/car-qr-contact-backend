@@ -3,8 +3,8 @@ package com.chacall.chacall.service;
 import com.chacall.chacall.domain.Car;
 import com.chacall.chacall.domain.Contact;
 import com.chacall.chacall.domain.User;
-import com.chacall.chacall.repository.CarRepository;
-import com.chacall.chacall.repository.ContactRepository;
+import com.chacall.chacall.repository.CarJpaRepository;
+import com.chacall.chacall.repository.ContactJpaRepository;
 import com.chacall.chacall.repository.UserJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +21,13 @@ class ContactServiceTest {
     private ContactService contactService;
 
     @Autowired
-    private ContactRepository contactRepository;
+    private ContactJpaRepository contactRepository;
 
     @Autowired
     private UserJpaRepository userJpaRepository;
 
     @Autowired
-    private CarRepository carRepository;
+    private CarJpaRepository carRepository;
 
     @Test
     public void 연락처_정상_등록() {

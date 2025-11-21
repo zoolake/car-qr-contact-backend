@@ -1,8 +1,9 @@
 package com.chacall.chacall.repository;
 
 import com.chacall.chacall.domain.QR;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface QRRepository extends JpaRepository<QR, Long> {
+public interface QRRepository {
+    QR save(QR qr);
+
     QR findBySerialNo(String serialNo);
 }

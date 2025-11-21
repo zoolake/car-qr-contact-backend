@@ -2,7 +2,7 @@ package com.chacall.chacall.service;
 
 import com.chacall.chacall.domain.Car;
 import com.chacall.chacall.domain.User;
-import com.chacall.chacall.repository.CarRepository;
+import com.chacall.chacall.repository.CarJpaRepository;
 import com.chacall.chacall.repository.UserJpaRepository;
 import com.google.zxing.WriterException;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class QRServiceTest {
     private UserJpaRepository userJpaRepository;
 
     @Autowired
-    private CarRepository carRepository;
+    private CarJpaRepository carRepository;
 
     @Test
     public void QR_코드_생성() throws IOException, WriterException {
