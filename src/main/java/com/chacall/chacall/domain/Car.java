@@ -6,7 +6,8 @@ import lombok.Getter;
 @Entity
 @Getter
 public class Car {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
     private Long id;
 
@@ -45,6 +46,10 @@ public class Car {
     public void changeMessage(String newMessage) {
 //        validateMessage(newMessage);
         message = newMessage;
+    }
+
+    public void setQR(QR qr) {
+        this.qr = qr;
     }
 
 }

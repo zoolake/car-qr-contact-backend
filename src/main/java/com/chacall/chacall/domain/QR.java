@@ -27,5 +27,12 @@ public class QR {
         this.car = car;
         this.serialNo = serialNo;
         this.imagePath = imagePath;
+        car.setQR(this);
+    }
+
+    /* 단위테스트를 위한 생성자 */
+    protected QR (Long qrId, Car car, String serialNo, String imagePath) {
+        this(car,serialNo, imagePath);
+        this.id = qrId;
     }
 }

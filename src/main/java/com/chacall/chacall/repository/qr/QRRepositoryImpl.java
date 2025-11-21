@@ -4,6 +4,8 @@ import com.chacall.chacall.domain.QR;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class QRRepositoryImpl implements QRRepository {
@@ -18,5 +20,10 @@ public class QRRepositoryImpl implements QRRepository {
     @Override
     public QR findBySerialNo(String serialNo) {
         return qrJpaRepository.findBySerialNo(serialNo);
+    }
+
+    @Override
+    public Optional<QR> findById(Long qrId) {
+        return qrJpaRepository.findById(qrId);
     }
 }

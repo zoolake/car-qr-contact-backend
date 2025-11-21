@@ -40,11 +40,12 @@ public class QRService {
     }
 
     /* QR 생성 */
-    public void createQR(Car car) {
+    public Long createQR(Car car) {
         try {
             String serialNo = UUID.randomUUID().toString().replace("-", "");
             String imagePath = generateQRImage(serialNo);
-            qrRepository.save(new QR(car, serialNo, imagePath));
+
+            return qrRepository.save(new QR(car, serialNo, imagePath)).getId();
         } catch (IOException e) {
             throw new UncheckedIOException("QR 코드 이미지 생성 실패", e);
         } catch (WriterException e) {
