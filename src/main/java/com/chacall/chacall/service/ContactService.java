@@ -28,7 +28,7 @@ public class ContactService {
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 carId 입니다."));
 
-        if (contactRepository.findContactByPhoneNumber(phoneNumber).isPresent()) {
+        if (contactRepository.findContactByCarIdAndPhoneNumber(carId, phoneNumber).isPresent()) {
             throw new IllegalArgumentException("차량에 이미 등록된 연락처 입니다.");
         }
 

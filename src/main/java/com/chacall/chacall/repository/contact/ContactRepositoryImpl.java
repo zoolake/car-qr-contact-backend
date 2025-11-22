@@ -29,7 +29,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     @Override
-    public Optional<Contact> findContactByPhoneNumber(String phoneNumber) {
-        return contactJpaRepository.findContactByPhoneNumber(phoneNumber);
+    public Optional<Contact> findContactByCarIdAndPhoneNumber(Long carId, String phoneNumber) {
+        return contactJpaRepository.findContactByCarIdAndPhoneNumber(carId, phoneNumber);
     }
 }

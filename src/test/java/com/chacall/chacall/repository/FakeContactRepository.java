@@ -45,9 +45,10 @@ public class FakeContactRepository implements ContactRepository {
     }
 
     @Override
-    public Optional<Contact> findContactByPhoneNumber(String phoneNumber) {
+    public Optional<Contact> findContactByCarIdAndPhoneNumber(Long carId, String phoneNumber) {
         return database.values().stream()
-                .filter(contact -> contact.getPhoneNumber().equals(phoneNumber))
+                .filter(contact ->
+                        contact.getCar().getId().equals(carId) && contact.getPhoneNumber().equals(phoneNumber))
                 .findFirst();
     }
 }
