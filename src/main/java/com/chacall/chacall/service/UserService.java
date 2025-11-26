@@ -14,8 +14,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     /* 회원가입 */
-    public Long join(String phoneNumber, String password, String confirmPassword) {
-        if (!password.equals(confirmPassword)) {
+    public Long join(String phoneNumber, String password, String passwordConfirm) {
+        if (!password.equals(passwordConfirm)) {
             throw new IllegalArgumentException("입력한 비밀번호가 서로 일치하지 않습니다.");
         }
 

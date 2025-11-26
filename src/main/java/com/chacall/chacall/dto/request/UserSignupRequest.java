@@ -8,5 +8,5 @@ import lombok.RequiredArgsConstructor;
 public class UserSignupRequest {
     private final String phoneNumber;
     private final String password;
-    private final String confirmPassword;
+    private final String passwordConfirm;
 }

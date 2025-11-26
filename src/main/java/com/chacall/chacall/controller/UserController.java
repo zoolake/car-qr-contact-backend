@@ -15,6 +15,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -29,25 +36,24 @@ public class UserController {
     private final UserService userService;
     private final CarService carService;
 
+    private final AuthenticationManager authenticationManager;
+
     /* 로그인 */
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> login(@RequestBody @Valid UserLoginRequest request, HttpServletRequest servletRequest) {
-        User user = userService.login(request.getPhoneNumber(), request.getPassword());
+    public ResponseEntity<UserLoginResponse> login(@RequestBody @Valid UserLoginRequest request) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(request.getPhoneNumber(), request.getPassword());
 
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        Authentication authentication = authenticationManager.authenticate(token);
 
-        HttpSession session = servletRequest.getSession();
-        session.setAttribute("loginUser", SessionUser.from(user));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return ResponseEntity.ok(UserLoginResponse.from(user));
+        return ResponseEntity.ok().build();
     }
 
     /* 회원가입 */
     @PostMapping("/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid UserSignupRequest request) {
-        userService.join(request.getPhoneNumber(), request.getPassword(), request.getConfirmPassword());
+        userService.join(request.getPhoneNumber(), request.getPassword(), request.getPasswordConfirm());
 
         URI targetLocation = URI.create("/");
         return ResponseEntity.created(targetLocation).build();
@@ -56,6 +62,8 @@ public class UserController {
     /* 차량 목록 조회 */
     @GetMapping("/{userId}/cars")
     public ResponseEntity<List<CarResponse>> readCars(@PathVariable Long userId) {
+        System.out.println("[START] UserController >> readCars:" + userId);
+
         List<CarResponse> response = carService.findCarsByUserId(userId).stream()
                 .map(CarResponse::from)
                 .toList();
