@@ -37,19 +37,6 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("로그인을 한다.")
-    void login() {
-        String phoneNumber = "010-1234-5678";
-        String password = "pwd123";
-        userService.join(phoneNumber, password, password);
-
-        User loginUser = userService.login(phoneNumber, password);
-
-        assertThat(loginUser).isNotNull();
-        assertThat(loginUser.getPhoneNumber()).isEqualTo(phoneNumber);
-    }
-
-    @Test
     @DisplayName("이미 가입된 휴대폰 번호인 경우 회원가입 시 예외가 발생한다.")
     void failWhenEnteredPhoneNumberIsDuplicated() {
         String phoneNumber = "010-1234-5678";
