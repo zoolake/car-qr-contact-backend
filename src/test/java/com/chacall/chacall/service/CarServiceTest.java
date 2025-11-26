@@ -74,7 +74,7 @@ class CarServiceTest {
     }
 
     @Test
-    @DisplayName("차량 등록 시, 현재 계정으로 등록된 차량과 닉네임이 중복되는 경우 등록에 실패한다.")
+    @DisplayName("차량 등록 시, 현재 계정으로 등록된 차량들 중 닉네임이 중복되는 경우 등록에 실패한다.")
     void failWhenNicknameIsDuplicated() {
         User user = userRepository.save(createTestUser());
         String nickname = "차량 닉네임";
