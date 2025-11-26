@@ -1,6 +1,8 @@
 package com.chacall.chacall.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -8,8 +10,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CarRegisterRequest {
 
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$", message = "닉네임은 특수문자를 제외한 2~10자리여야 합니다.")
+    @NotBlank
+    @Size(min = 3, max = 12)
+    @Pattern(regexp = "^[A-Za-z0-9가-힣]+$")
     private final String nickname;
+
+    @Size(max = 30)
     private final String message;
 
 }
