@@ -4,14 +4,11 @@ import com.chacall.chacall.domain.Car;
 import com.chacall.chacall.domain.Contact;
 import com.chacall.chacall.domain.ContactStatus;
 import com.chacall.chacall.domain.User;
-import com.chacall.chacall.repository.*;
+import com.chacall.chacall.fake.repository.FakeCarRepository;
+import com.chacall.chacall.fake.repository.FakeContactRepository;
+import com.chacall.chacall.fake.repository.FakeUserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -106,7 +103,7 @@ class ContactServiceTest {
     }
 
     private User createTestUser() {
-        User user = new User("01012123434", "test1");
+        User user = new User("01012123434", "pwd1234!");
         return new FakeUserRepository().save(user);
     }
 

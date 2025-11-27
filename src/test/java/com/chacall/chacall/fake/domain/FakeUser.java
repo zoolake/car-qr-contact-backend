@@ -1,4 +1,4 @@
-package com.chacall.chacall.domain;
+package com.chacall.chacall.fake.domain;
 
 import com.chacall.chacall.domain.User;
 

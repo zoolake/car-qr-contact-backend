@@ -1,6 +1,6 @@
-package com.chacall.chacall.repository;
+package com.chacall.chacall.fake.repository;
 
-import com.chacall.chacall.domain.FakeQR;
+import com.chacall.chacall.fake.domain.FakeQR;
 import com.chacall.chacall.domain.QR;
 import com.chacall.chacall.repository.qr.QRRepository;
 

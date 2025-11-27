@@ -1,6 +1,6 @@
-package com.chacall.chacall.repository;
+package com.chacall.chacall.fake.repository;
 
-import com.chacall.chacall.domain.FakeUser;
+import com.chacall.chacall.fake.domain.FakeUser;
 import com.chacall.chacall.domain.User;
 import com.chacall.chacall.repository.user.UserRepository;
 

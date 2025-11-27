@@ -1,7 +1,7 @@
-package com.chacall.chacall.repository;
+package com.chacall.chacall.fake.repository;
 
 import com.chacall.chacall.domain.Car;
-import com.chacall.chacall.domain.FakeCar;
+import com.chacall.chacall.fake.domain.FakeCar;
 import com.chacall.chacall.repository.car.CarRepository;
 
 import java.util.List;

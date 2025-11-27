@@ -1,4 +1,6 @@
-package com.chacall.chacall.domain;
+package com.chacall.chacall.fake.domain;
+
+import com.chacall.chacall.domain.Car;
 
 public class FakeCar extends Car {
     public FakeCar(Long carId, Car car) {

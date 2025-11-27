@@ -1,7 +1,7 @@
-package com.chacall.chacall.repository;
+package com.chacall.chacall.fake.repository;
 
 import com.chacall.chacall.domain.Contact;
-import com.chacall.chacall.domain.FakeContact;
+import com.chacall.chacall.fake.domain.FakeContact;
 import com.chacall.chacall.repository.contact.ContactRepository;
 
 import java.util.List;
