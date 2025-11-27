@@ -37,11 +37,15 @@ public class Contact {
     }
 
     public void changePhoneNumber(String newPhoneNumber) {
-        this.phoneNumber = newPhoneNumber;
+        if (!phoneNumber.equals(newPhoneNumber)) {
+            this.phoneNumber = newPhoneNumber;
+        }
     }
 
     public void changeName(String newName) {
-        this.name = newName;
+        if (!name.equals(newName)) {
+            this.name = newName;
+        }
     }
 
     public void changeStatus(ContactStatus newStatus) {

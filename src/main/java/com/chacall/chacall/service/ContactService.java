@@ -41,17 +41,9 @@ public class ContactService {
         Contact contact = contactRepository.findById(contactId)
                 .orElseThrow(() -> new IllegalArgumentException("없는 연락처 입니다."));
 
-        if (newPhoneNumber != null) {
-            contact.changePhoneNumber(newPhoneNumber);
-        }
-
-        if (newName != null) {
-            contact.changeName(newName);
-        }
-
-        if (newStatus != null) {
-            contact.changeStatus(newStatus);
-        }
+        contact.changePhoneNumber(newPhoneNumber);
+        contact.changeName(newName);
+        contact.changeStatus(newStatus);
 
         return contact;
     }
