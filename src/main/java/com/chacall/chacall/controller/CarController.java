@@ -68,8 +68,8 @@ public class CarController {
 
     /* 연락처 목록 조회 */
     @GetMapping("/{carId}/contacts")
-    public ResponseEntity<List<ContactResponse>> readContacts(@PathVariable Long carId) {
-        List<ContactResponse> response = contactService.findContactsByCarId(carId).stream()
+    public ResponseEntity<List<ContactResponse>> readContacts(@AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long carId) {
+        List<ContactResponse> response = contactService.findContactsByUserOwnCar(sessionUser.getUserId(), carId).stream()
                 .map(ContactResponse::from)
                 .toList();
 
