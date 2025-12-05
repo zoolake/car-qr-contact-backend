@@ -20,6 +20,21 @@ public class ContactService {
 
     @Transactional(readOnly = true)
     public List<Contact> findContactsByCarId(Long carId) {
+        Car car = carRepository.findById(carId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 carId 입니다."));
+
+        return contactRepository.findContactsByCarId(car.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Contact> findContactsByUserOwnCar(Long userId, Long carId) {
+        Car car = carRepository.findById(carId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 carId 입니다."));
+
+        if (!userId.equals(car.getUser().getId())) {
+            throw new IllegalArgumentException("본인 소유의 차량이 아닙니다.");
+        }
+
         return contactRepository.findContactsByCarId(carId);
     }
 

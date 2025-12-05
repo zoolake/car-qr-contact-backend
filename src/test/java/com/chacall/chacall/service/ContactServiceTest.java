@@ -4,11 +4,11 @@ import com.chacall.chacall.domain.Car;
 import com.chacall.chacall.domain.Contact;
 import com.chacall.chacall.domain.ContactStatus;
 import com.chacall.chacall.domain.User;
-import com.chacall.chacall.fake.repository.FakeCarRepository;
-import com.chacall.chacall.fake.repository.FakeContactRepository;
-import com.chacall.chacall.fake.repository.FakeUserRepository;
+import com.chacall.chacall.repository.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -16,8 +16,39 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 class ContactServiceTest {
 
     private final FakeContactRepository contactRepository = new FakeContactRepository();
+    private final FakeUserRepository userRepository = new FakeUserRepository();
     private final FakeCarRepository carRepository = new FakeCarRepository();
     private final ContactService contactService = new ContactService(contactRepository, carRepository);
+
+    @Test
+    @DisplayName("본인 소유의 차량 ID 를 통해 해당 차량에 등록된 연락처를 조회한다.")
+    void getContactsByCarId() {
+        User user = createTestUser("01011112222", "pwd1234");
+        Car car1 = createTestCar(user, "car1", "car1 message");
+        contactService.registerContact(car1.getId(), "01011112222", "첫번째연락처");
+        contactService.registerContact(car1.getId(), "01022223333", "두번째연락처");
+
+        List<Contact> car1Contacts = contactService.findContactsByUserOwnCar(user.getId(), car1.getId());
+
+        assertThat(car1Contacts.size()).isEqualTo(2);
+        car1Contacts.forEach(contact -> assertThat(contact.getCar().getId()).isEqualTo(car1.getId()));
+    }
+
+    @Test
+    @DisplayName("사용자가 보유하지 않은 차량의 연락처 목록을 조회하려는 경우 예외가 발생한다.")
+    void failToReadContactsWhenCarDoesNotExist() {
+        User user = createTestUser("01011112222", "pwd1234");
+        Car car = createTestCar(user, "car", "car message");
+        contactService.registerContact(car.getId(), "01011112222", "contactName");
+
+        User anotherUser = createTestUser("01033334444", "pwd5678");
+        Car anotherCar = createTestCar(anotherUser, "anotherCar", "anotherCar message");
+        contactService.registerContact(anotherCar.getId(), "01033334444", "contactName");
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> contactService.findContactsByUserOwnCar(user.getId(), anotherCar.getId()));
+    }
+
 
     @Test
     @DisplayName("차량에 연락처를 등록한다.")
@@ -102,14 +133,22 @@ class ContactServiceTest {
         assertThat(updatedContact.getStatus()).isEqualTo(newStatus);
     }
 
+    private User createTestUser(String phoneNumber, String password) {
+        User user = new User(phoneNumber, password);
+        return userRepository.save(user);
+    }
+
+    private Car createTestCar(User user, String carNickname, String carMessage) {
+        Car car = new Car(user, carNickname, carMessage);
+        return carRepository.save(car);
+    }
+
     private User createTestUser() {
-        User user = new User("01012123434", "pwd1234!");
-        return new FakeUserRepository().save(user);
+        return createTestUser("01012123434", "test1");
     }
 
     private Car createTestCar(User user) {
-        Car car = new Car(user, "carNickName", "carMessage");
-        return carRepository.save(car);
+        return createTestCar(user, "carNickname", "carMessage");
     }
 
 }

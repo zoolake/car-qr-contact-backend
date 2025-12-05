@@ -45,4 +45,10 @@ public class FakeUserRepository implements UserRepository {
     public Optional<User> findById(Long userId) {
         return Optional.ofNullable(database.get(userId));
     }
+
+    public void selectAll() {
+        System.out.println("\n[FakeUserRepository.selectAll]");
+        database.forEach((id, user) -> System.out.println(">> id:" + id + " / phoneNumber:" + user.getPhoneNumber()));
+        System.out.println();
+    }
 }
