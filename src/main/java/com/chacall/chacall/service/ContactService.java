@@ -3,6 +3,7 @@ package com.chacall.chacall.service;
 import com.chacall.chacall.domain.Car;
 import com.chacall.chacall.domain.Contact;
 import com.chacall.chacall.domain.ContactStatus;
+import com.chacall.chacall.domain.User;
 import com.chacall.chacall.repository.car.CarRepository;
 import com.chacall.chacall.repository.contact.ContactRepository;
 import lombok.RequiredArgsConstructor;
@@ -63,4 +64,21 @@ public class ContactService {
         return contact;
     }
 
+    @Transactional
+    public void deleteContact(Long userId, Long carId, Long contactId) {
+        Contact contact = contactRepository.findById(contactId)
+                .orElseThrow(() -> new IllegalArgumentException("없는 연락처 입니다."));
+
+        Car car = contact.getCar();
+        if (!car.getId().equals(carId)) {
+            throw new IllegalArgumentException("차량에 등록된 연락처가 아닙니다.");
+        }
+
+        User user = car.getUser();
+        if (!user.getId().equals(userId)) {
+            throw new IllegalArgumentException("사용자가 등록한 연락처가 아닙니다.");
+        }
+
+        contactRepository.delete(contact);
+    }
 }

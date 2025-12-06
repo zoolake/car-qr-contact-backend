@@ -51,4 +51,9 @@ public class FakeContactRepository implements ContactRepository {
                         contact.getCar().getId().equals(carId) && contact.getPhoneNumber().equals(phoneNumber))
                 .findFirst();
     }
+
+    @Override
+    public void delete(Contact contact) {
+        database.remove(contact.getId());
+    }
 }

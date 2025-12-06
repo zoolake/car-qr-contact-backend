@@ -32,4 +32,9 @@ public class ContactRepositoryImpl implements ContactRepository {
     public Optional<Contact> findContactByCarIdAndPhoneNumber(Long carId, String phoneNumber) {
         return contactJpaRepository.findContactByCarIdAndPhoneNumber(carId, phoneNumber);
     }
+
+    @Override
+    public void delete(Contact contact) {
+        contactJpaRepository.delete(contact);
+    }
 }

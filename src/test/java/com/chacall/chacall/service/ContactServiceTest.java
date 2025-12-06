@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -133,6 +134,68 @@ class ContactServiceTest {
         assertThat(updatedContact.getPhoneNumber()).isEqualTo(newPhoneNumber);
         assertThat(updatedContact.getName()).isEqualTo(newName);
         assertThat(updatedContact.getStatus()).isEqualTo(newStatus);
+    }
+
+    @Test
+    @DisplayName("연락처를 삭제한다.")
+    void deleteContact() {
+        User user = createTestUser("01012345678", "pwd1234!");
+        Car car = createTestCar(user, "carNickname", "carMessage");
+
+        String phoneNumber = "01002240224";
+        String name = "contactName";
+        Long contactId = contactService.registerContact(car.getId(), phoneNumber, name);
+
+        contactService.deleteContact(user.getId(), car.getId(), contactId);
+
+        Optional<Contact> deletedContact = contactRepository.findById(contactId);
+        assertThat(deletedContact.isEmpty()).isTrue();
+    }
+
+    @Test
+    @DisplayName("없는 연락처를 삭제하려는 경우 예외가 발생한다.")
+    void failToDeleteContactWhenContactNotExist() {
+        User user = createTestUser("01012345678", "pwd1234!");
+        Car car = createTestCar(user, "carNickname", "carMessage");
+
+        String phoneNumber = "01002240224";
+        String name = "contactName";
+        contactService.registerContact(car.getId(), phoneNumber, name);
+
+        Long invalidContactId = 23L;
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> contactService.deleteContact(user.getId(), car.getId(), invalidContactId));
+    }
+
+    @Test
+    @DisplayName("삭제하는 연락처가 현재 차량에 등록된 연락처가 아닌 경우 예외가 발생한다.")
+    void failToDeleteContactWhenContactNotRegisteredToCar() {
+        User user = createTestUser("01012345678", "pwd1234!");
+        Car car = createTestCar(user, "carNickname1", "carMessage1");
+
+        String phoneNumber = "01002240224";
+        String name = "contactName";
+        Long contactId = contactService.registerContact(car.getId(), phoneNumber, name);
+
+        Car anotherCar = createTestCar(user, "carNickname2", "carMessage2");
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> contactService.deleteContact(user.getId(), anotherCar.getId(), contactId));
+    }
+
+    @Test
+    @DisplayName("삭제하는 연락처의 차량이 현재 사용자의 차량이 아닌 경우 예외가 발생한다.")
+    void failToDeleteContactWhenCarNotOwnedByUser() {
+        User user = createTestUser("01012345678", "pwd1234!");
+        Car car = createTestCar(user, "carNickname1", "carMessage1");
+
+        String phoneNumber = "01002240224";
+        String name = "contactName";
+        Long contactId = contactService.registerContact(car.getId(), phoneNumber, name);
+
+        User anotherUser = createTestUser("01023456789", "pwd1234!");
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> contactService.deleteContact(anotherUser.getId(), car.getId(), contactId));
     }
 
     private User createTestUser(String phoneNumber, String password) {
