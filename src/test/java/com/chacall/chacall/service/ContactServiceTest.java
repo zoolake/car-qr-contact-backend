@@ -4,7 +4,9 @@ import com.chacall.chacall.domain.Car;
 import com.chacall.chacall.domain.Contact;
 import com.chacall.chacall.domain.ContactStatus;
 import com.chacall.chacall.domain.User;
-import com.chacall.chacall.repository.*;
+import com.chacall.chacall.fake.repository.FakeCarRepository;
+import com.chacall.chacall.fake.repository.FakeContactRepository;
+import com.chacall.chacall.fake.repository.FakeUserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +25,7 @@ class ContactServiceTest {
     @Test
     @DisplayName("본인 소유의 차량 ID 를 통해 해당 차량에 등록된 연락처를 조회한다.")
     void getContactsByCarId() {
-        User user = createTestUser("01011112222", "pwd1234");
+        User user = createTestUser("01011112222", "pwd1234!");
         Car car1 = createTestCar(user, "car1", "car1 message");
         contactService.registerContact(car1.getId(), "01011112222", "첫번째연락처");
         contactService.registerContact(car1.getId(), "01022223333", "두번째연락처");
@@ -37,11 +39,11 @@ class ContactServiceTest {
     @Test
     @DisplayName("사용자가 보유하지 않은 차량의 연락처 목록을 조회하려는 경우 예외가 발생한다.")
     void failToReadContactsWhenCarDoesNotExist() {
-        User user = createTestUser("01011112222", "pwd1234");
+        User user = createTestUser("01011112222", "pwd1234!");
         Car car = createTestCar(user, "car", "car message");
         contactService.registerContact(car.getId(), "01011112222", "contactName");
 
-        User anotherUser = createTestUser("01033334444", "pwd5678");
+        User anotherUser = createTestUser("01033334444", "pwd1234!");
         Car anotherCar = createTestCar(anotherUser, "anotherCar", "anotherCar message");
         contactService.registerContact(anotherCar.getId(), "01033334444", "contactName");
 
@@ -56,7 +58,7 @@ class ContactServiceTest {
         User user = createTestUser();
         Car car = createTestCar(user);
 
-        String phoneNumber = "010-3456-1234";
+        String phoneNumber = "01034561234";
         String name = "홍길동";
         Long contactId = contactService.registerContact(car.getId(), phoneNumber, name);
 
@@ -72,7 +74,7 @@ class ContactServiceTest {
     @DisplayName("등록되지 않은 차량에 연락처 등록 시 예외가 발생한다.")
     void failToRegisterContactWhenCarDoesNotExist() {
         Long invalidCarId = 13L;
-        String phoneNumber = "010-3456-1234";
+        String phoneNumber = "01034561234";
         String name = "홍길동";
 
         assertThatIllegalArgumentException()
@@ -85,7 +87,7 @@ class ContactServiceTest {
         User user = createTestUser();
         Car car = createTestCar(user);
 
-        String phoneNumber = "010-3456-1234";
+        String phoneNumber = "01034561234";
         String name = "홍길동";
         contactService.registerContact(car.getId(), phoneNumber, name);
 
@@ -100,12 +102,12 @@ class ContactServiceTest {
         User user = createTestUser();
         Car car = createTestCar(user);
 
-        String phoneNumber = "010-3456-1234";
+        String phoneNumber = "01034561234";
         String name = "홍길동";
         contactService.registerContact(car.getId(), phoneNumber, name);
 
         Long invalidContactId = 13L;
-        String newPhoneNumber = "010-1234-5678";
+        String newPhoneNumber = "01012345678";
         String newName = "임꺽정";
 
         assertThatIllegalArgumentException()
@@ -118,11 +120,11 @@ class ContactServiceTest {
         User user = createTestUser();
         Car car = createTestCar(user);
 
-        String phoneNumber = "010-3456-1234";
+        String phoneNumber = "01034561234";
         String name = "홍길동";
         Long contactId = contactService.registerContact(car.getId(), phoneNumber, name);
 
-        String newPhoneNumber = "010-1234-5678";
+        String newPhoneNumber = "01012345678";
         String newName = "임꺽정";
         ContactStatus newStatus = ContactStatus.AVAILABLE;
         Contact updatedContact = contactService.updateContactInfo(contactId, newPhoneNumber, newName, newStatus);
@@ -144,7 +146,7 @@ class ContactServiceTest {
     }
 
     private User createTestUser() {
-        return createTestUser("01012123434", "test1");
+        return createTestUser("01012123434", "pwd1234!");
     }
 
     private Car createTestCar(User user) {
