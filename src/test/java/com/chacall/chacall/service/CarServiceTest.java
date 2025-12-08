@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -165,6 +166,53 @@ class CarServiceTest {
                 .isThrownBy(() -> carService.updateCarInfo(invalidUserId, carId, newNickname, newMessage));
     }
 
+    @Test
+    @DisplayName("차량을 삭제한다.")
+    void deleteCar() {
+        User user = createTestUser("01012345678", "pwd1234!");
+        String carNickname = "carNickname";
+        String carMessage = "carMessage";
+        Long carId = carService.registerCar(user.getId(), carNickname, carMessage);
+
+        carService.deleteCar(user.getId(), carId);
+
+        Optional<Car> deletedCar = carRepository.findById(carId);
+        assertThat(deletedCar.isEmpty()).isTrue();
+    }
+
+    @Test
+    @DisplayName("등록되지 않은 차량을 삭제하려는 경우 예외가 발생한다.")
+    void failToDeleteCarWhenCarDoseNotExist() {
+        User user = createTestUser("01012345678", "pwd1234!");
+        String carNickname = "carNickname";
+        String carMessage = "carMessage";
+        Long validCarId = carService.registerCar(user.getId(), carNickname, carMessage);
+
+        Long invalidCarId = 23L;
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> carService.deleteCar(user.getId(), invalidCarId));
+    }
+
+    @Test
+    @DisplayName("삭제하려는 차량이 사용자의 차량이 아닌경우 예외가 발생한다.")
+    void failToDeleteCarWhenCarNotOwnedByUser() {
+        User user = createTestUser("01012345678", "pwd1234!");
+        String carNickname = "carNickname";
+        String carMessage = "carMessage";
+        Long carId = carService.registerCar(user.getId(), carNickname, carMessage);
+
+        User anotherUser = createTestUser("01034567890", "pwd5678!");
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> carService.deleteCar(anotherUser.getId(), carId));
+
+    }
+
+
+    private User createTestUser(String phoneNumber, String password) {
+        User user = new User(phoneNumber, password);
+        return userRepository.save(user);
+    }
 
     private User createTestUser() {
         return new User("01012123434", "pwd1234!");

@@ -40,6 +40,11 @@ public class FakeCarRepository implements CarRepository {
     }
 
     @Override
+    public void deleteCar(Car car) {
+        database.remove(car.getId());
+    }
+
+    @Override
     public Optional<Car> findById(Long carId) {
         return Optional.ofNullable(database.get(carId));
     }

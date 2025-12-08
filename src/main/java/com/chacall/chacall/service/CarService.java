@@ -70,4 +70,17 @@ public class CarService {
 
         return car;
     }
+
+    @Transactional
+    public void deleteCar(Long userId, Long carId) {
+        Car car = carRepository.findById(carId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 차량입니다."));
+
+        User user = car.getUser();
+        if (!user.getId().equals(userId)) {
+            throw new IllegalArgumentException("사용자의 차량이 아닙니다.");
+        }
+
+        carRepository.deleteCar(car);
+    }
 }

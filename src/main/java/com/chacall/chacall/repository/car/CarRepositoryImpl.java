@@ -32,4 +32,9 @@ public class CarRepositoryImpl implements CarRepository {
     public List<Car> findCarsByUserId(Long userId) {
         return carJpaRepository.findCarsByUserId(userId);
     }
+
+    @Override
+    public void deleteCar(Car car) {
+        carJpaRepository.delete(car);
+    }
 }

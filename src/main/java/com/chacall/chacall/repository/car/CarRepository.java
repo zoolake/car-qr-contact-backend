@@ -13,4 +13,6 @@ public interface CarRepository {
     Car save(Car car);
 
     Optional<Car> findCarByUserIdAndNickname(Long userId, String nickname);
+
+    void deleteCar(Car car);
 }
