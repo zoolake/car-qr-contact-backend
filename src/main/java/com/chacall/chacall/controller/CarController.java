@@ -79,7 +79,7 @@ public class CarController {
     /* 연락처 등록 */
     @PostMapping("/{carId}/contacts")
     public ResponseEntity<Void> registerContact(@PathVariable Long carId, @RequestBody @Valid ContactRegisterRequest request) {
-        contactService.registerContact(carId, request.getPhoneNumber(), request.getName());
+        contactService.registerSubContact(carId, request.getPhoneNumber(), request.getName());
 
         URI targetLocation = URI.create("/api/cars/" + carId + "/contacts");
         return ResponseEntity.created(targetLocation).build();

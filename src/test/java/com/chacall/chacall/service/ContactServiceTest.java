@@ -1,9 +1,6 @@
 package com.chacall.chacall.service;
 
-import com.chacall.chacall.domain.Car;
-import com.chacall.chacall.domain.Contact;
-import com.chacall.chacall.domain.ContactStatus;
-import com.chacall.chacall.domain.User;
+import com.chacall.chacall.domain.*;
 import com.chacall.chacall.fake.repository.FakeCarRepository;
 import com.chacall.chacall.fake.repository.FakeContactRepository;
 import com.chacall.chacall.fake.repository.FakeUserRepository;
@@ -13,8 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 
 class ContactServiceTest {
 
@@ -28,8 +24,8 @@ class ContactServiceTest {
     void getContactsByCarId() {
         User user = createTestUser("01011112222", "pwd1234!");
         Car car1 = createTestCar(user, "car1", "car1 message");
-        contactService.registerContact(car1.getId(), "01011112222", "첫번째연락처");
-        contactService.registerContact(car1.getId(), "01022223333", "두번째연락처");
+        contactService.registerSubContact(car1.getId(), "01011112222", "첫번째연락처");
+        contactService.registerSubContact(car1.getId(), "01022223333", "두번째연락처");
 
         List<Contact> car1Contacts = contactService.findContactsByUserOwnCar(user.getId(), car1.getId());
 
@@ -42,11 +38,11 @@ class ContactServiceTest {
     void failToReadContactsWhenCarDoesNotExist() {
         User user = createTestUser("01011112222", "pwd1234!");
         Car car = createTestCar(user, "car", "car message");
-        contactService.registerContact(car.getId(), "01011112222", "contactName");
+        contactService.registerSubContact(car.getId(), "01011112222", "contactName");
 
         User anotherUser = createTestUser("01033334444", "pwd1234!");
         Car anotherCar = createTestCar(anotherUser, "anotherCar", "anotherCar message");
-        contactService.registerContact(anotherCar.getId(), "01033334444", "contactName");
+        contactService.registerSubContact(anotherCar.getId(), "01033334444", "contactName");
 
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> contactService.findContactsByUserOwnCar(user.getId(), anotherCar.getId()));
@@ -61,7 +57,7 @@ class ContactServiceTest {
 
         String phoneNumber = "01034561234";
         String name = "홍길동";
-        Long contactId = contactService.registerContact(car.getId(), phoneNumber, name);
+        Long contactId = contactService.registerSubContact(car.getId(), phoneNumber, name);
 
         Contact contact = contactRepository.findById(contactId).get();
         assertThat(contact).isNotNull();
@@ -79,7 +75,7 @@ class ContactServiceTest {
         String name = "홍길동";
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> contactService.registerContact(invalidCarId, phoneNumber, name));
+                .isThrownBy(() -> contactService.registerSubContact(invalidCarId, phoneNumber, name));
     }
 
     @Test
@@ -90,11 +86,11 @@ class ContactServiceTest {
 
         String phoneNumber = "01034561234";
         String name = "홍길동";
-        contactService.registerContact(car.getId(), phoneNumber, name);
+        contactService.registerSubContact(car.getId(), phoneNumber, name);
 
         String duplicatedPhoneNumber = phoneNumber;
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> contactService.registerContact(car.getId(), duplicatedPhoneNumber, name));
+                .isThrownBy(() -> contactService.registerSubContact(car.getId(), duplicatedPhoneNumber, name));
     }
 
     @Test
@@ -105,7 +101,7 @@ class ContactServiceTest {
 
         String phoneNumber = "01034561234";
         String name = "홍길동";
-        contactService.registerContact(car.getId(), phoneNumber, name);
+        contactService.registerSubContact(car.getId(), phoneNumber, name);
 
         Long invalidContactId = 13L;
         String newPhoneNumber = "01012345678";
@@ -123,7 +119,7 @@ class ContactServiceTest {
 
         String phoneNumber = "01034561234";
         String name = "홍길동";
-        Long contactId = contactService.registerContact(car.getId(), phoneNumber, name);
+        Long contactId = contactService.registerSubContact(car.getId(), phoneNumber, name);
 
         String newPhoneNumber = "01012345678";
         String newName = "임꺽정";
@@ -144,7 +140,7 @@ class ContactServiceTest {
 
         String phoneNumber = "01002240224";
         String name = "contactName";
-        Long contactId = contactService.registerContact(car.getId(), phoneNumber, name);
+        Long contactId = contactService.registerSubContact(car.getId(), phoneNumber, name);
 
         contactService.deleteContact(user.getId(), car.getId(), contactId);
 
@@ -160,7 +156,7 @@ class ContactServiceTest {
 
         String phoneNumber = "01002240224";
         String name = "contactName";
-        contactService.registerContact(car.getId(), phoneNumber, name);
+        contactService.registerSubContact(car.getId(), phoneNumber, name);
 
         Long invalidContactId = 23L;
 
@@ -176,7 +172,7 @@ class ContactServiceTest {
 
         String phoneNumber = "01002240224";
         String name = "contactName";
-        Long contactId = contactService.registerContact(car.getId(), phoneNumber, name);
+        Long contactId = contactService.registerSubContact(car.getId(), phoneNumber, name);
 
         Car anotherCar = createTestCar(user, "carNickname2", "carMessage2");
         assertThatIllegalArgumentException()
@@ -191,11 +187,50 @@ class ContactServiceTest {
 
         String phoneNumber = "01002240224";
         String name = "contactName";
-        Long contactId = contactService.registerContact(car.getId(), phoneNumber, name);
+        Long contactId = contactService.registerSubContact(car.getId(), phoneNumber, name);
 
         User anotherUser = createTestUser("01023456789", "pwd1234!");
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> contactService.deleteContact(anotherUser.getId(), car.getId(), contactId));
+    }
+
+    @Test
+    @DisplayName("메인 연락처의 경우 연락처 수정이 불가능하다.")
+    void failToUpdateWhenContactTypeIsMain() {
+        String phoneNumber = "01012345678";
+        User user = createTestUser(phoneNumber, "pwd1234!");
+        Car car = createTestCar(user, "carNickname", "carMessage");
+
+        Long mainContactId = contactService.registerMainContact(car.getId(), phoneNumber, "contactName");
+
+        String newPhoneNumber = "01034567890";
+        assertThatIllegalStateException()
+                .isThrownBy(() -> contactService.updateContactInfo(mainContactId, newPhoneNumber, "newName", ContactStatus.AVAILABLE));
+    }
+
+    @Test
+    @DisplayName("메인 연락처의 경우 삭제가 불가능하다.")
+    void failToDeleteWhenContactTypeIsMain() {
+        String phoneNumber = "01012345678";
+        User user = createTestUser(phoneNumber, "pwd1234!");
+        Car car = createTestCar(user, "carNickname", "carMessage");
+
+        Long mainContactId = contactService.registerMainContact(car.getId(), phoneNumber, "contactName");
+
+        assertThatIllegalStateException()
+                .isThrownBy(() -> contactService.deleteContact(user.getId(), car.getId(), mainContactId));
+    }
+
+    @Test
+    @DisplayName("이미 메인 연락처가 있는데 또 메인 연락처를 등록하는 경우 예외가 발생한다.")
+    void failToRegisterMainContactWhenMainContactIsAlreadyExist() {
+        String userPhoneNumber = "01012345678";
+        User user = createTestUser(userPhoneNumber, "pwd1234!");
+        Car car = createTestCar(user, "carNickname", "carMessage");
+        contactService.registerMainContact(car.getId(), userPhoneNumber, "firstMain");
+
+        assertThatIllegalStateException()
+                .isThrownBy(() -> contactService.registerMainContact(car.getId(), "01002240224", "secondMain"));
     }
 
     private User createTestUser(String phoneNumber, String password) {

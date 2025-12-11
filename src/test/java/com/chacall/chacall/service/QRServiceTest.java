@@ -35,7 +35,7 @@ class QRServiceTest {
         for (int i = 0; i < count; i++) {
             String phoneNumber = "0101234567" + i;
             String name = "testName" + i;
-            contactService.registerContact(car.getId(), phoneNumber, name);
+            contactService.registerSubContact(car.getId(), phoneNumber, name);
         }
 
         String serialNo = car.getQr().getSerialNo();

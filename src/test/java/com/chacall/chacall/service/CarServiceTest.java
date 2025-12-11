@@ -1,6 +1,8 @@
 package com.chacall.chacall.service;
 
 import com.chacall.chacall.domain.Car;
+import com.chacall.chacall.domain.Contact;
+import com.chacall.chacall.domain.ContactType;
 import com.chacall.chacall.domain.User;
 import com.chacall.chacall.fake.repository.FakeCarRepository;
 import com.chacall.chacall.fake.repository.FakeContactRepository;
@@ -205,7 +207,21 @@ class CarServiceTest {
 
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> carService.deleteCar(anotherUser.getId(), carId));
+    }
 
+    @Test
+    @DisplayName("새로운 차량 등록 시, 사용자의 휴대폰 번호 기반으로 메인 연락처가 자동으로 등록된다.")
+    void registerMainContactWhenNewCarIsRegistered() {
+        String userPhoneNumber = "01012345678";
+        User user = createTestUser(userPhoneNumber, "pwd1234!");
+        Long carId = carService.registerCar(user.getId(), "carNickname", "carMessage");
+
+        List<Contact> contacts = contactService.findContactsByCarId(carId);
+        Contact mainContact = contacts.get(0);
+
+        assertThat(contacts.size()).isEqualTo(1);
+        assertThat(mainContact.getType()).isEqualTo(ContactType.MAIN);
+        assertThat(mainContact.getPhoneNumber()).isEqualTo(userPhoneNumber);
     }
 
 

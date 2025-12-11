@@ -21,12 +21,15 @@ public class Contact {
     @Enumerated(value = EnumType.STRING)
     private ContactStatus status;
 
+    @Enumerated(value = EnumType.STRING)
+    private ContactType type;
+
     protected Contact() {
     }
 
     /* 단위테스트를 위한 생성자 */
-    protected Contact(Long contactId, Car car, String name, String phoneNumber) {
-        this(car, name, phoneNumber);
+    protected Contact(Long contactId, Car car, String name, String phoneNumber, ContactType type) {
+        this(car, name, phoneNumber, type);
         this.id = contactId;
     }
 
@@ -37,6 +40,11 @@ public class Contact {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.status = ContactStatus.AVAILABLE;
+    }
+
+    public Contact(Car car, String name, String phoneNumber, ContactType type) {
+        this(car, name, phoneNumber);
+        this.type = type;
     }
 
     private void validateName(String name) {
@@ -59,6 +67,10 @@ public class Contact {
 
     public void changePhoneNumber(String newPhoneNumber) {
         if (!phoneNumber.equals(newPhoneNumber)) {
+            if (isMain()) {
+                throw new IllegalStateException("메인 연락처는 연락처 수정이 불가합니다.");
+            }
+
             validatePhoneNumber(newPhoneNumber);
             this.phoneNumber = newPhoneNumber;
         }
@@ -77,5 +89,12 @@ public class Contact {
         }
     }
 
+    public boolean isMain() {
+        return type == ContactType.MAIN;
+    }
+
+    public boolean isSub() {
+        return type == ContactType.SUB;
+    }
 
 }
