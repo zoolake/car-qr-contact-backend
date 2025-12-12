@@ -78,8 +78,8 @@ public class CarController {
 
     /* 연락처 등록 */
     @PostMapping("/{carId}/contacts")
-    public ResponseEntity<Void> registerContact(@PathVariable Long carId, @RequestBody @Valid ContactRegisterRequest request) {
-        contactService.registerSubContact(carId, request.getPhoneNumber(), request.getName());
+    public ResponseEntity<Void> registerContact(@AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long carId, @RequestBody @Valid ContactRegisterRequest request) {
+        contactService.registerSubContact(sessionUser.getUserId(), carId, request.getPhoneNumber(), request.getName());
 
         URI targetLocation = URI.create("/api/cars/" + carId + "/contacts");
         return ResponseEntity.created(targetLocation).build();

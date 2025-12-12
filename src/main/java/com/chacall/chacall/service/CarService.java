@@ -46,7 +46,7 @@ public class CarService {
         qrService.createQR(car);
 
         // 차주 번호 등록
-        contactService.registerMainContact(car.getId(), user.getPhoneNumber(), nickname);
+        contactService.registerMainContact(userId, car.getId(), user.getPhoneNumber(), nickname);
 
         return car.getId();
     }

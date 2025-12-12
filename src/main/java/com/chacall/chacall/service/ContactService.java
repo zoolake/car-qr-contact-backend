@@ -37,20 +37,22 @@ public class ContactService {
     }
 
     @Transactional
-    public Long registerMainContact(Long carId, String phoneNumber, String name) {
-        return registerContact(carId, phoneNumber, name, ContactType.MAIN);
+    public Long registerMainContact(Long userId, Long carId, String phoneNumber, String name) {
+        return registerContact(userId, carId, phoneNumber, name, ContactType.MAIN);
     }
 
     @Transactional
-    public Long registerSubContact(Long carId, String phoneNumber, String name) {
-        return registerContact(carId, phoneNumber, name, ContactType.SUB);
+    public Long registerSubContact(Long userId, Long carId, String phoneNumber, String name) {
+        return registerContact(userId, carId, phoneNumber, name, ContactType.SUB);
     }
 
-    private Long registerContact(Long carId, String phoneNumber, String name, ContactType contactType) {
+    private Long registerContact(Long userId, Long carId, String phoneNumber, String name, ContactType contactType) {
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 carId 입니다."));
 
-        // TODO: 사용자의 차량이 맞는지 확인하는 부분 필요할 듯
+        if (!car.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("본인 소유의 차량이 아닙니다.");
+        }
 
         if (contactType == ContactType.MAIN) {
             List<Contact> contacts = contactRepository.findContactsByCarId(carId);
