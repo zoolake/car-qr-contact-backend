@@ -42,7 +42,7 @@ class ContactServiceTest {
 
         User anotherUser = createTestUser("01033334444", "pwd1234!");
         Car anotherCar = createTestCar(anotherUser, "anotherCar", "anotherCar message");
-        contactService.registerSubContact(user.getId(), anotherCar.getId(), "01033334444", "contactName");
+        contactService.registerSubContact(anotherUser.getId(), anotherCar.getId(), "01033334444", "contactName");
 
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> contactService.findContactsByUserOwnCar(user.getId(), anotherCar.getId()));
