@@ -17,9 +17,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class QRScanFacadeTest {
 
@@ -33,8 +33,6 @@ class QRScanFacadeTest {
 
     private final QRScanFacade qrScanFacade = new QRScanFacade(qrService, contactService);
 
-    // 연락처 상태가 unavailable 일 때, 사용자 계정이 아닌 다른 곳에서는 못보게끔 하는 테스트도 필요할듯.
-
     @Test
     @DisplayName("QR 코드의 시리얼 번호를 통해 차량에 등록된 연락 가능한 연락처 목록을 조회한다.")
     void getAvailableContactsByQRSerialNo() {
@@ -45,18 +43,18 @@ class QRScanFacadeTest {
         for (int i = 0; i < count; i++) {
             String phoneNumber = "0101234567" + i;
             String name = "testName" + i;
-            contactService.registerSubContact(user.getId(), car.getId(), phoneNumber, name);
+            Long contactId = contactService.registerSubContact(user.getId(), car.getId(), phoneNumber, name);
+
+            // 0,2,4 -> unavailable
+            if (i % 2 == 0) {
+                contactService.updateContactInfo(contactId, phoneNumber, name, ContactStatus.UNAVAILABLE);
+            }
         }
 
         String serialNo = car.getQr().getSerialNo();
-        QRContactsResponse response = qrScanFacade.findContactsBySerialNo(serialNo);
+        List<ContactResponse> availableContacts = qrScanFacade.findAvailableContactsBySerialNo(serialNo).getContacts();
 
-        List<ContactResponse> contacts = response.getContacts();
-
-        assertThat(contacts.size()).isEqualTo(count + 1);
-        for (ContactResponse contact : contacts) {
-            assertThat(contact.getStatus()).isEqualTo(ContactStatus.AVAILABLE);
-        }
+        assertThat(availableContacts.size()).isEqualTo(3);
     }
 
     private User createTestUser() {

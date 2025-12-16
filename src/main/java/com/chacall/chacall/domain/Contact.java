@@ -89,6 +89,14 @@ public class Contact {
         }
     }
 
+    public boolean isAvailable() {
+        return status == ContactStatus.AVAILABLE;
+    }
+
+    public boolean isUnavailable() {
+        return status == ContactStatus.UNAVAILABLE;
+    }
+
     public boolean isMain() {
         return type == ContactType.MAIN;
     }
