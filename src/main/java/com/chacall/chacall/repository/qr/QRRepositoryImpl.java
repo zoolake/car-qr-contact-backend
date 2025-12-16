@@ -18,7 +18,7 @@ public class QRRepositoryImpl implements QRRepository {
     }
 
     @Override
-    public QR findBySerialNo(String serialNo) {
+    public Optional<QR> findBySerialNo(String serialNo) {
         return qrJpaRepository.findBySerialNo(serialNo);
     }
 

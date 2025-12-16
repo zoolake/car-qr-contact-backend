@@ -23,7 +23,7 @@ class CarServiceTest {
     private final FakeContactRepository contactRepository = new FakeContactRepository();
     private final FakeQRRepository qrRepository = new FakeQRRepository();
     private final ContactService contactService = new ContactService(contactRepository, carRepository);
-    private final QRService qrService = new QRService(qrRepository, contactService);
+    private final QRService qrService = new QRService(qrRepository);
     private final CarService carService = new CarService(carRepository, userRepository, qrService, contactService);
 
     @Test

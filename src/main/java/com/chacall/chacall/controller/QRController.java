@@ -1,6 +1,9 @@
 package com.chacall.chacall.controller;
 
+import com.chacall.chacall.domain.Contact;
 import com.chacall.chacall.dto.response.ContactResponse;
+import com.chacall.chacall.dto.response.QRContactsResponse;
+import com.chacall.chacall.facade.QRScanFacade;
 import com.chacall.chacall.service.QRService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +19,10 @@ import java.util.List;
 @RequestMapping(path = "/api/qrs")
 public class QRController {
 
-    private final QRService qrService;
+    private final QRScanFacade qrScanFacade;
 
     @GetMapping("/{serialNo}")
-    public ResponseEntity<List<ContactResponse>> readContactsByScanningQR(@PathVariable String serialNo) {
-        List<ContactResponse> response = qrService.findContactsByQRSerialNo(serialNo).stream()
-                .map(ContactResponse::from)
-                .toList();
-
-        return ResponseEntity.ok(response);
+    public ResponseEntity<QRContactsResponse> readContactsByScanningQR(@PathVariable String serialNo) {
+        return ResponseEntity.ok(qrScanFacade.findContactsBySerialNo(serialNo));
     }
 }

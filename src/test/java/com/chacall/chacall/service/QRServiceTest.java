@@ -20,34 +20,8 @@ class QRServiceTest {
     private final FakeUserRepository userRepository = new FakeUserRepository();
 
     private final ContactService contactService = new ContactService(contactRepository, carRepository);
-    private final QRService qrService = new QRService(qrRepository, contactService);
+    private final QRService qrService = new QRService(qrRepository);
 
-
-    // 연락처 상태가 unavailable 일 때, 사용자 계정이 아닌 다른 곳에서는 못보게끔 하는 테스트도 필요할듯.
-
-    @Test
-    @DisplayName("QR 코드의 시리얼 번호를 통해 차량에 등록된 연락 가능한 연락처 목록을 조회한다.")
-    void getAvailableContactsByQRSerialNo() {
-        User user = createTestUser();
-        Car car = createTestCar(user);
-
-        int count = 5;
-        for (int i = 0; i < count; i++) {
-            String phoneNumber = "0101234567" + i;
-            String name = "testName" + i;
-            contactService.registerSubContact(user.getId(),car.getId(), phoneNumber, name);
-        }
-
-        String serialNo = car.getQr().getSerialNo();
-        List<Contact> contacts = qrService.findContactsByQRSerialNo(serialNo);
-
-        assertThat(contacts.size()).isEqualTo(count + 1);
-        for (Contact contact : contacts) {
-            assertThat(contact.getStatus()).isEqualTo(ContactStatus.AVAILABLE);
-        }
-    }
-
-    // 이 테스트가 QR 테스트에 있어야할까? => 다르게 생각하면 ContactService에 있어야할지 CarService 에 있어야 할지도 고민된다.
     @Test
     @DisplayName("QR 코드를 생성한다.")
     void createQR() {

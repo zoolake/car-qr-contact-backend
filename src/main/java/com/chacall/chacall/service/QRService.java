@@ -27,16 +27,10 @@ public class QRService {
 
     private final QRRepository qrRepository;
 
-    private final ContactService contactService;
-
-    /* 시리얼 번호를 통한 연락처 조회*/
-    public List<Contact> findContactsByQRSerialNo(String serialNo) {
-        QR qr = qrRepository.findBySerialNo(serialNo);
-        if (qr == null) {
-            throw new IllegalArgumentException("존재하지 않는 QR 코드 입니다.");
-        }
-
-        return contactService.findContactsByCarId(qr.getCar().getId());
+    /* 시리얼 번호를 통한 QR 조회 */
+    public QR findQR(String serialNo) {
+        return qrRepository.findBySerialNo(serialNo)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 QR 코드 입니다."));
     }
 
     /* QR 생성 */

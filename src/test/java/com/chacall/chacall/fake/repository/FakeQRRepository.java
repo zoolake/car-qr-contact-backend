@@ -32,11 +32,10 @@ public class FakeQRRepository implements QRRepository {
     }
 
     @Override
-    public QR findBySerialNo(String serialNo) {
+    public Optional<QR> findBySerialNo(String serialNo) {
         return database.values().stream()
                 .filter(qr -> qr.getSerialNo().equals(serialNo))
-                .findFirst()
-                .get();
+                .findFirst();
     }
 
     @Override
