@@ -1,11 +1,9 @@
 package com.chacall.chacall.facade;
 
 import com.chacall.chacall.domain.Car;
-import com.chacall.chacall.domain.Contact;
 import com.chacall.chacall.domain.ContactStatus;
 import com.chacall.chacall.domain.User;
 import com.chacall.chacall.dto.response.ContactResponse;
-import com.chacall.chacall.dto.response.QRContactsResponse;
 import com.chacall.chacall.fake.repository.FakeCarRepository;
 import com.chacall.chacall.fake.repository.FakeContactRepository;
 import com.chacall.chacall.fake.repository.FakeQRRepository;
@@ -17,7 +15,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
