@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/login", "/api/users/signup")
+                        .requestMatchers("/api/users/login", "/api/users/signup", "/api/qrs/*")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
