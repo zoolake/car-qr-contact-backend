@@ -18,13 +18,13 @@ public class QRScanFacade {
     private final QRService qrService;
     private final ContactService contactService;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public QRContactsResponse findAvailableContactsBySerialNo(String serialNo) {
         QR qr = qrService.findQR(serialNo);
         Car car = qr.getCar();
         List<Contact> contacts = contactService.findContactsByCarId(car.getId())
                 .stream()
-                .filter(Contact::isAvailable)
+                .filter(contact -> contact.isAvailable() || contact.isMain())
                 .toList();
 
 

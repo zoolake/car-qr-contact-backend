@@ -1,6 +1,7 @@
 package com.chacall.chacall.facade;
 
 import com.chacall.chacall.domain.Car;
+import com.chacall.chacall.domain.Contact;
 import com.chacall.chacall.domain.ContactStatus;
 import com.chacall.chacall.domain.User;
 import com.chacall.chacall.dto.response.ContactResponse;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,7 +34,7 @@ class QRScanFacadeTest {
 
     @Test
     @DisplayName("QR 코드의 시리얼 번호를 통해 차량에 등록된 연락 가능한 연락처 목록을 조회한다.")
-    void getAvailableContactsByQRSerialNo() {
+    void findAvailableContactsByQRSerialNo() {
         User user = createTestUser();
         Car car = createTestCar(user);
 
@@ -52,6 +54,19 @@ class QRScanFacadeTest {
         List<ContactResponse> availableContacts = qrScanFacade.findAvailableContactsBySerialNo(serialNo).getContacts();
 
         assertThat(availableContacts.size()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("메인 연락처가 연락 불가능 상태여도 조회되어야 한다.")
+    void findMainContactWhenMainContactStatusUnavailable() {
+        User user = createTestUser();
+        Car car = createTestCar(user);
+
+        Contact mainContact = contactService.findContactsByCarId(car.getId()).get(0);
+        mainContact.changeStatus(ContactStatus.UNAVAILABLE);
+
+        List<ContactResponse> contacts = qrScanFacade.findAvailableContactsBySerialNo(car.getQr().getSerialNo()).getContacts();
+        assertThat(contacts.get(0).getContactId()).isEqualTo(mainContact.getId());
     }
 
     private User createTestUser() {
