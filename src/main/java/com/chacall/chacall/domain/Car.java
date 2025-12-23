@@ -1,10 +1,13 @@
 package com.chacall.chacall.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,11 +21,8 @@ public class Car {
     private String nickname;
     private String message;
 
-    @OneToOne(mappedBy = "car")
+    @OneToOne(mappedBy = "car", orphanRemoval = true)
     private QR qr;
-
-    protected Car() {
-    }
 
     /* 단위테스트를 위한 생성자 */
     protected Car(Long carId, User user, String nickname, String message) {

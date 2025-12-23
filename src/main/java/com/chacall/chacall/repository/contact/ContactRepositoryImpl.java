@@ -37,4 +37,9 @@ public class ContactRepositoryImpl implements ContactRepository {
     public void delete(Contact contact) {
         contactJpaRepository.delete(contact);
     }
+
+    @Override
+    public void deleteContactsByCarId(Long carId) {
+        contactJpaRepository.deleteContactsByCarId(carId);
+    }
 }

@@ -3,6 +3,7 @@ package com.chacall.chacall.service;
 import com.chacall.chacall.domain.Car;
 import com.chacall.chacall.domain.User;
 import com.chacall.chacall.repository.car.CarRepository;
+import com.chacall.chacall.repository.contact.ContactRepository;
 import com.chacall.chacall.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class CarService {
 
     private final CarRepository carRepository;
     private final UserRepository userRepository;
+    private final ContactRepository contactRepository;
 
     private final QRService qrService;
     private final ContactService contactService;
@@ -81,6 +83,7 @@ public class CarService {
             throw new IllegalArgumentException("사용자의 차량이 아닙니다.");
         }
 
+        contactRepository.deleteContactsByCarId(carId);
         carRepository.deleteCar(car);
     }
 }

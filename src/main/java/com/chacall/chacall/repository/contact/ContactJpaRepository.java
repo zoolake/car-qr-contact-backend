@@ -10,4 +10,6 @@ public interface ContactJpaRepository extends JpaRepository<Contact, Long> {
     List<Contact> findContactsByCarId(Long carId);
 
     Optional<Contact> findContactByCarIdAndPhoneNumber(Long carId, String phoneNumber);
+
+    void deleteContactsByCarId(Long carId);
 }

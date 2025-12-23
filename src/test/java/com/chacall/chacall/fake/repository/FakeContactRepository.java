@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 public class FakeContactRepository implements ContactRepository {
 
@@ -55,5 +56,15 @@ public class FakeContactRepository implements ContactRepository {
     @Override
     public void delete(Contact contact) {
         database.remove(contact.getId());
+    }
+
+    @Override
+    public void deleteContactsByCarId(Long carId) {
+        database.entrySet().stream()
+                .filter(entry -> entry.getValue().getCar().getId().equals(carId))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue
+                ));
     }
 }

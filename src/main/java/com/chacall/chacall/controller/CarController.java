@@ -66,6 +66,12 @@ public class CarController {
         return ResponseEntity.ok(CarUpdateResponse.from(car));
     }
 
+    /* 차량 삭제 */
+    @DeleteMapping("/{carId}")
+    public void deleteCar(@AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long carId) {
+        carService.deleteCar(sessionUser.getUserId(), carId);
+    }
+
     /* 연락처 목록 조회 */
     @GetMapping("/{carId}/contacts")
     public ResponseEntity<List<ContactResponse>> readContacts(@AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long carId) {

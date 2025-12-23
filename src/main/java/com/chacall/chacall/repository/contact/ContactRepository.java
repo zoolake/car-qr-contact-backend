@@ -15,4 +15,6 @@ public interface ContactRepository {
     Optional<Contact> findContactByCarIdAndPhoneNumber(Long carId, String phoneNumber);
 
     void delete(Contact contact);
+
+    void deleteContactsByCarId(Long carId);
 }
