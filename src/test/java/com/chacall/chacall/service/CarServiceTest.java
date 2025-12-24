@@ -24,7 +24,7 @@ class CarServiceTest {
     private final FakeQRRepository qrRepository = new FakeQRRepository();
     private final ContactService contactService = new ContactService(contactRepository, carRepository);
     private final QRService qrService = new QRService(qrRepository);
-    private final CarService carService = new CarService(carRepository, userRepository, qrService, contactService);
+    private final CarService carService = new CarService(carRepository, userRepository, contactRepository, qrService, contactService);
 
     @Test
     @DisplayName("차량을 등록한다.")
