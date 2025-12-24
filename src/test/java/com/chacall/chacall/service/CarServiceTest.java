@@ -1,9 +1,6 @@
 package com.chacall.chacall.service;
 
-import com.chacall.chacall.domain.Car;
-import com.chacall.chacall.domain.Contact;
-import com.chacall.chacall.domain.ContactType;
-import com.chacall.chacall.domain.User;
+import com.chacall.chacall.domain.*;
 import com.chacall.chacall.fake.repository.FakeCarRepository;
 import com.chacall.chacall.fake.repository.FakeContactRepository;
 import com.chacall.chacall.fake.repository.FakeQRRepository;
@@ -24,7 +21,7 @@ class CarServiceTest {
     private final FakeQRRepository qrRepository = new FakeQRRepository();
     private final ContactService contactService = new ContactService(contactRepository, carRepository);
     private final QRService qrService = new QRService(qrRepository);
-    private final CarService carService = new CarService(carRepository, userRepository, contactRepository, qrService, contactService);
+    private final CarService carService = new CarService(carRepository, userRepository, contactRepository, qrRepository, qrService, contactService);
 
     @Test
     @DisplayName("차량을 등록한다.")
@@ -207,6 +204,26 @@ class CarServiceTest {
 
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> carService.deleteCar(anotherUser.getId(), carId));
+    }
+
+    @Test
+    @DisplayName("차량을 삭제하면 차량에 등록된 연락처 및 매핑된 QR도 삭제가 된다.")
+    void deleteContactsAndQRWhenCarDeleted() {
+        User user = createTestUser("01012345678", "pwd1234!");
+        String carNickname = "carNickname";
+        String carMessage = "carMessage";
+        Long carId = carService.registerCar(user.getId(), carNickname, carMessage);
+        String qrSerialNo = carService.findCar(carId).getQr().getSerialNo();
+
+        carService.deleteCar(user.getId(), carId);
+
+        Optional<Car> car = carRepository.findById(carId);
+        List<Contact> contacts = contactRepository.findContactsByCarId(carId);
+        Optional<QR> qr = qrRepository.findBySerialNo(qrSerialNo);
+
+        assertThat(car.isEmpty()).isTrue();
+        assertThat(contacts.isEmpty()).isTrue();
+        assertThat(qr.isEmpty()).isTrue();
     }
 
     @Test

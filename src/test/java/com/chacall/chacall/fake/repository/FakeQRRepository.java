@@ -42,4 +42,9 @@ public class FakeQRRepository implements QRRepository {
     public Optional<QR> findById(Long qrId) {
         return Optional.ofNullable(database.get(qrId));
     }
+
+    @Override
+    public void deleteQR(QR qr) {
+        database.remove(qr.getId());
+    }
 }

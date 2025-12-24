@@ -26,4 +26,9 @@ public class QRRepositoryImpl implements QRRepository {
     public Optional<QR> findById(Long qrId) {
         return qrJpaRepository.findById(qrId);
     }
+
+    @Override
+    public void deleteQR(QR qr) {
+        qrJpaRepository.delete(qr);
+    }
 }

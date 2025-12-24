@@ -75,7 +75,7 @@ class QRScanFacadeTest {
     }
 
     private Car createTestCar(User user) {
-        CarService carService = new CarService(carRepository, userRepository, contactRepository, qrService, contactService);
+        CarService carService = new CarService(carRepository, userRepository, contactRepository, qrRepository, qrService, contactService);
         Long carId = carService.registerCar(user.getId(), "carNickname", "carMessage");
         return carService.findCar(carId);
     }

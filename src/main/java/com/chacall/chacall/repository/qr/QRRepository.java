@@ -10,4 +10,6 @@ public interface QRRepository {
     Optional<QR> findBySerialNo(String serialNo);
 
     Optional<QR> findById(Long qrId);
+
+    void deleteQR(QR qr);
 }

@@ -1,5 +1,6 @@
 package com.chacall.chacall.fake.repository;
 
+import com.chacall.chacall.domain.Car;
 import com.chacall.chacall.domain.Contact;
 import com.chacall.chacall.fake.domain.FakeContact;
 import com.chacall.chacall.repository.contact.ContactRepository;
@@ -60,11 +61,11 @@ public class FakeContactRepository implements ContactRepository {
 
     @Override
     public void deleteContactsByCarId(Long carId) {
-        database.entrySet().stream()
-                .filter(entry -> entry.getValue().getCar().getId().equals(carId))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue
-                ));
+        for (Map.Entry<Long, Contact> entry : database.entrySet()) {
+            Car car = entry.getValue().getCar();
+            if (car.getId().equals(carId)) {
+                database.remove(entry.getKey());
+            }
+        }
     }
 }
