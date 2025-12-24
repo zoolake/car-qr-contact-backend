@@ -21,7 +21,7 @@ public class Car {
     private String nickname;
     private String message;
 
-    @OneToOne(mappedBy = "car", orphanRemoval = true)
+    @OneToOne(mappedBy = "car")
     private QR qr;
 
     /* 단위테스트를 위한 생성자 */
