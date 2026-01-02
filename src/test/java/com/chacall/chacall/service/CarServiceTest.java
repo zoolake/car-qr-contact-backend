@@ -5,6 +5,7 @@ import com.chacall.chacall.fake.repository.FakeCarRepository;
 import com.chacall.chacall.fake.repository.FakeContactRepository;
 import com.chacall.chacall.fake.repository.FakeQRRepository;
 import com.chacall.chacall.fake.repository.FakeUserRepository;
+import com.chacall.chacall.fake.service.FakePasswordEncoder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -243,12 +244,12 @@ class CarServiceTest {
 
 
     private User createTestUser(String phoneNumber, String password) {
-        User user = new User(phoneNumber, password);
+        User user = new User(phoneNumber, Password.fromRaw(password, new FakePasswordEncoder()));
         return userRepository.save(user);
     }
 
     private User createTestUser() {
-        return new User("01012123434", "pwd1234!");
+        return createTestUser("01012123434", "pwd1234!");
     }
 
 }

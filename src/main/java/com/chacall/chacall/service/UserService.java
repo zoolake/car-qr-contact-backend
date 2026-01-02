@@ -1,5 +1,6 @@
 package com.chacall.chacall.service;
 
+import com.chacall.chacall.domain.Password;
 import com.chacall.chacall.domain.User;
 import com.chacall.chacall.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class UserService {
             throw new IllegalArgumentException("이미 가입된 전화번호 입니다.");
         }
 
-        User user = new User(phoneNumber, passwordEncoder.encode(password));
+        User user = new User(phoneNumber, Password.fromRaw(password, passwordEncoder));
 
         return userRepository.save(user).getId();
     }

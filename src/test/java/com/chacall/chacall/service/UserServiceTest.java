@@ -1,5 +1,6 @@
 package com.chacall.chacall.service;
 
+import com.chacall.chacall.domain.Password;
 import com.chacall.chacall.domain.User;
 import com.chacall.chacall.fake.repository.FakeUserRepository;
 import com.chacall.chacall.fake.service.FakePasswordEncoder;
@@ -40,7 +41,7 @@ class UserServiceTest {
     void failWhenEnteredPhoneNumberIsDuplicated() {
         String phoneNumber = "01012345678";
         String password = "pwd1234!";
-        userRepository.save(new User(phoneNumber, password));
+        userRepository.save(new User(phoneNumber, Password.fromRaw(password, new FakePasswordEncoder())));
 
         String newPassword = "newPwd123!";
         String newConfirmPassword = newPassword;

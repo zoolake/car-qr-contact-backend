@@ -1,5 +1,6 @@
 package com.chacall.chacall.auth;
 
+import com.chacall.chacall.domain.Password;
 import com.chacall.chacall.domain.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class SessionUser implements UserDetails {
     private final String password;
 
     public static SessionUser from(User user) {
-        return new SessionUser(user.getId(), user.getPhoneNumber(), user.getPassword());
+        return new SessionUser(user.getId(), user.getPhoneNumber(), user.getPassword().value());
     }
 
     @Override

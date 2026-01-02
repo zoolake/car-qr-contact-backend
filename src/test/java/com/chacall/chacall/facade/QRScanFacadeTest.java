@@ -1,14 +1,12 @@
 package com.chacall.chacall.facade;
 
-import com.chacall.chacall.domain.Car;
-import com.chacall.chacall.domain.Contact;
-import com.chacall.chacall.domain.ContactStatus;
-import com.chacall.chacall.domain.User;
+import com.chacall.chacall.domain.*;
 import com.chacall.chacall.dto.response.ContactResponse;
 import com.chacall.chacall.fake.repository.FakeCarRepository;
 import com.chacall.chacall.fake.repository.FakeContactRepository;
 import com.chacall.chacall.fake.repository.FakeQRRepository;
 import com.chacall.chacall.fake.repository.FakeUserRepository;
+import com.chacall.chacall.fake.service.FakePasswordEncoder;
 import com.chacall.chacall.service.CarService;
 import com.chacall.chacall.service.ContactService;
 import com.chacall.chacall.service.QRService;
@@ -70,7 +68,7 @@ class QRScanFacadeTest {
     }
 
     private User createTestUser() {
-        User user = new User("01012121212", "pwd1234!");
+        User user = new User("01012121212", Password.fromRaw("pwd1234!", new FakePasswordEncoder()));
         return userRepository.save(user);
     }
 

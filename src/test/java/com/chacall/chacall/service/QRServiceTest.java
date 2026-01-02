@@ -5,6 +5,7 @@ import com.chacall.chacall.fake.repository.FakeCarRepository;
 import com.chacall.chacall.fake.repository.FakeContactRepository;
 import com.chacall.chacall.fake.repository.FakeQRRepository;
 import com.chacall.chacall.fake.repository.FakeUserRepository;
+import com.chacall.chacall.fake.service.FakePasswordEncoder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -40,7 +41,7 @@ class QRServiceTest {
     }
 
     private User createTestUser() {
-        User user = new User("01012121212", "pwd1234!");
+        User user = new User("01012121212", Password.fromRaw("pwd1234!", new FakePasswordEncoder()));
         return userRepository.save(user);
     }
 
