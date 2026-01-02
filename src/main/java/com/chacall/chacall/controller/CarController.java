@@ -5,10 +5,7 @@ import com.chacall.chacall.domain.Car;
 import com.chacall.chacall.dto.request.CarRegisterRequest;
 import com.chacall.chacall.dto.request.CarUpdateRequest;
 import com.chacall.chacall.dto.request.ContactRegisterRequest;
-import com.chacall.chacall.dto.response.CarInfoResponse;
-import com.chacall.chacall.dto.response.CarResponse;
-import com.chacall.chacall.dto.response.CarUpdateResponse;
-import com.chacall.chacall.dto.response.ContactResponse;
+import com.chacall.chacall.dto.response.*;
 import com.chacall.chacall.service.CarService;
 import com.chacall.chacall.service.ContactService;
 import jakarta.validation.Valid;
@@ -31,12 +28,12 @@ public class CarController {
 
     /* 차량 목록 조회 */
     @GetMapping
-    public ResponseEntity<List<CarResponse>> readCars(@AuthenticationPrincipal SessionUser sessionUser) {
-        List<CarResponse> response = carService.findCarsByUserId(sessionUser.getUserId()).stream()
+    public ResponseEntity<CarListResponse> readCars(@AuthenticationPrincipal SessionUser sessionUser) {
+        List<CarResponse> cars = carService.findCarsByUserId(sessionUser.getUserId()).stream()
                 .map(CarResponse::from)
                 .toList();
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(CarListResponse.of(sessionUser.getPhoneNumber(), cars));
     }
 
     /* 차량 등록 */
