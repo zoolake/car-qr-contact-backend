@@ -33,7 +33,7 @@ public class Password {
         }
 
         if (!rawPassword.matches(PASSWORD_FORMAT_REGEX)) {
-            throw new IllegalArgumentException("비밀번호는 문자, 숫자, 특수문자로 구성되어 있습니다.");
+            throw new IllegalArgumentException("비밀번호는 영문, 숫자, 특수문자로 구성되어 있습니다.");
         }
     }
 
