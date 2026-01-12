@@ -13,8 +13,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class QRService {
-    //    public static final String QR_IMAGE_SAVE_PATH = "images";
-    //    public static final String QR_TARGET_BASE_URL = "www.google.com/search?q=";
     @Value("${qr.target-base-url}")
     private String qrTargetBaseUrl;
 
