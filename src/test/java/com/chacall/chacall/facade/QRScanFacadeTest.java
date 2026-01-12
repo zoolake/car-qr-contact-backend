@@ -7,6 +7,8 @@ import com.chacall.chacall.fake.repository.FakeContactRepository;
 import com.chacall.chacall.fake.repository.FakeQRRepository;
 import com.chacall.chacall.fake.repository.FakeUserRepository;
 import com.chacall.chacall.fake.service.FakePasswordEncoder;
+import com.chacall.chacall.fake.service.FakeQRImageGenerator;
+import com.chacall.chacall.infra.QRImageGenerator;
 import com.chacall.chacall.service.CarService;
 import com.chacall.chacall.service.ContactService;
 import com.chacall.chacall.service.QRService;
@@ -26,7 +28,9 @@ class QRScanFacadeTest {
     private final FakeUserRepository userRepository = new FakeUserRepository();
 
     private final ContactService contactService = new ContactService(contactRepository, carRepository);
-    private final QRService qrService = new QRService(qrRepository);
+
+    private final QRImageGenerator qrImageGenerator = new FakeQRImageGenerator();
+    private final QRService qrService = new QRService(qrRepository, qrImageGenerator);
 
     private final QRScanFacade qrScanFacade = new QRScanFacade(qrService, contactService);
 

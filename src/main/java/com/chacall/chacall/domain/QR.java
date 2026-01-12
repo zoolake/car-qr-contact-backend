@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class QR {
     public static final int WIDTH = 200;
     public static final int HEIGHT = 200;
+    public static final String IMAGE_FORMAT = "png";
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qr_id")

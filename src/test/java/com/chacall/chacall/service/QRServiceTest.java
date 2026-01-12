@@ -6,6 +6,8 @@ import com.chacall.chacall.fake.repository.FakeContactRepository;
 import com.chacall.chacall.fake.repository.FakeQRRepository;
 import com.chacall.chacall.fake.repository.FakeUserRepository;
 import com.chacall.chacall.fake.service.FakePasswordEncoder;
+import com.chacall.chacall.fake.service.FakeQRImageGenerator;
+import com.chacall.chacall.infra.QRImageGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +23,9 @@ class QRServiceTest {
     private final FakeUserRepository userRepository = new FakeUserRepository();
 
     private final ContactService contactService = new ContactService(contactRepository, carRepository);
-    private final QRService qrService = new QRService(qrRepository);
+
+    private final QRImageGenerator qrImageGenerator = new FakeQRImageGenerator();
+    private final QRService qrService = new QRService(qrRepository, qrImageGenerator);
 
     @Test
     @DisplayName("QR 코드를 생성한다.")

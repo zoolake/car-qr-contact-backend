@@ -6,6 +6,8 @@ import com.chacall.chacall.fake.repository.FakeContactRepository;
 import com.chacall.chacall.fake.repository.FakeQRRepository;
 import com.chacall.chacall.fake.repository.FakeUserRepository;
 import com.chacall.chacall.fake.service.FakePasswordEncoder;
+import com.chacall.chacall.fake.service.FakeQRImageGenerator;
+import com.chacall.chacall.infra.QRImageGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +23,8 @@ class CarServiceTest {
     private final FakeContactRepository contactRepository = new FakeContactRepository();
     private final FakeQRRepository qrRepository = new FakeQRRepository();
     private final ContactService contactService = new ContactService(contactRepository, carRepository);
-    private final QRService qrService = new QRService(qrRepository);
+    private final QRImageGenerator qrImageGenerator = new FakeQRImageGenerator();
+    private final QRService qrService = new QRService(qrRepository, qrImageGenerator);
     private final CarService carService = new CarService(carRepository, userRepository, contactRepository, qrRepository, qrService, contactService);
 
     @Test

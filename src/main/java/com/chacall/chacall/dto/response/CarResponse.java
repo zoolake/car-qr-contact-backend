@@ -14,8 +14,7 @@ public class CarResponse {
     private final String imageUrl;
 
     public static CarResponse from(Car car) {
-        String baseUrl = "http://localhost:8080/";
-        String imageName = car.getQr().getImagePath();
-        return new CarResponse(car.getId(), car.getNickname(), car.getMessage(), baseUrl + imageName);
+        String imagePath = car.getQr().getImagePath();
+        return new CarResponse(car.getId(), car.getNickname(), car.getMessage(), imagePath);
     }
 }
