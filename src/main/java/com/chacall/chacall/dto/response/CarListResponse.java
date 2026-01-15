@@ -1,6 +1,5 @@
 package com.chacall.chacall.dto.response;
 
-import com.chacall.chacall.domain.Car;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
