@@ -1,5 +1,0 @@
-services:
-  chacall-frontend:
-    build: ./chacall-frontend/chacall
-  chacall-backend:
-    build: ./chacall-backend
