@@ -1,0 +1,26 @@
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE}
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_DB_URL}
+    username: ${MYSQL_DB_USERNAME}
+    password: ${MYSQL_DB_PASSWORD}
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+      timeout: 30m
+
+qr:
+  storage-dir: ${QR_STORAGE_DIR}
+  target-base-url: ${QR_TARGET_BASE_URL}
+
