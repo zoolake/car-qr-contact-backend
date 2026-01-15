@@ -34,7 +34,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleIllegalStateException(IllegalStateException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.of("요청을 처리할 수 없는 상태 입니다."));
+                .body(ErrorResponse.of("요청을 처리할 수 없는 상태입니다."));
     }
 
     @Override
