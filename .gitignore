@@ -38,3 +38,7 @@ out/
 
 ### local images ###
 images/
+
+### env ###
+.env
+.env.*

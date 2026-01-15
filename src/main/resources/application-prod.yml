@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+  session:
+    jdbc:
+      initialize-schema: never
+
+server:
+  servlet:
+    session:
+      cookie:
+        secure: true

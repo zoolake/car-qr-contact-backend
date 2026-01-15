@@ -1,28 +1,26 @@
 spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE}
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/chacall?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: myuser
-    password: 123
-  session:
-    jdbc:
-      initialize-schema: always
+    url: ${MYSQL_DB_URL}
+    username: ${MYSQL_DB_USERNAME}
+    password: ${MYSQL_DB_PASSWORD}
 
   jpa:
-    hibernate:
-      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
-        highlight_sql: true
-    show-sql: true
 
 server:
   servlet:
     session:
       cookie:
         http-only: true
-        secure: true
       timeout: 30m
+
+qr:
+  storage-dir: ${QR_STORAGE_DIR}
+  target-base-url: ${QR_TARGET_BASE_URL}
 

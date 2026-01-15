@@ -1,12 +1,54 @@
 services:
+  chacall-frontend:
+    container_name: chacall-frontend
+
+    build: ../chacall-frontend/chacall
+
+    ports:
+      - 80:80
+
+    depends_on:
+      - chacall-backend
+
+  chacall-backend:
+    container_name: chacall-backend
+    build: .
+
+    ports:
+      - 8080:8080
+
+    depends_on:
+      chacall-db:
+        condition: service_healthy
+
+    volumes:
+      - ${QR_HOST_DIR}:${QR_STORAGE_DIR}
+
+    env_file:
+      - .env
+
   chacall-db:
-    image: mysql
+    image: mysql:9.5.0
+
+    container_name: chacall-mysql-db
+
     environment:
-      MYSQL_ROOT_PASSWORD: wnsgh12
-      MYSQL_DATABASE: chacall
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: 123
+      MYSQL_ROOT_PASSWORD: ${MYSQL_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB_DATABASE}
+      MYSQL_USER: ${MYSQL_DB_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_DB_PASSWORD}
       TZ: Asia/Seoul
+
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
     ports:
       - 3306:3306
 
+    healthcheck:
+      test: ["CMD","mysqladmin","ping"]
+      interval: 5s
+      retries: 10
+
+    env_file:
+      - .env
