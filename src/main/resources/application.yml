@@ -20,6 +20,10 @@ server:
         http-only: true
       timeout: 30m
 
+logging:
+  level:
+    org.springframework.security: DEBUG
+
 qr:
   storage-dir: ${QR_STORAGE_DIR}
   target-base-url: ${QR_TARGET_BASE_URL}

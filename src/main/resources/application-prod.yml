@@ -12,3 +12,7 @@ server:
     session:
       cookie:
         secure: true
+
+logging:
+  level:
+    org.springframework.security: warn
